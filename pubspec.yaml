@@ -1,0 +1,33 @@
+name: openjmu_lite
+description: A lite version of OpenJMU for essential function.
+
+version: 0.1.0+1
+
+environment:
+    sdk: ">=2.2.2 <3.0.0"
+    flutter: 1.5.4-hotfix.2
+
+dependencies:
+    flutter:
+        sdk: flutter
+
+    cached_network_image: 1.1.1
+    crypto: 2.1.1+1
+    dio: 2.1.13
+    event_bus: 1.1.0
+    fluttertoast: 3.1.0
+    flutter_cache_manager: 1.1.1
+    flutter_platform_widgets: 0.12.0
+    flutter_webview_plugin: 0.3.7
+    shared_preferences: 0.5.3+4
+    url_launcher: 5.1.2
+    uuid: 2.0.2
+
+dev_dependencies:
+    flutter_test:
+        sdk: flutter
+
+flutter:
+    uses-material-design: true
+    assets:
+        - images/
