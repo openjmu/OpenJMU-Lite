@@ -49,17 +49,17 @@ class _SplashPageState extends State<SplashPage> {
     void navigate() {
         Future.delayed(const Duration(seconds: 3), () {
             try {
-                Navigator.of(context).pushAndRemoveUntil(PageRouteBuilder(
-                    transitionDuration: const Duration(milliseconds: 1000),
-                    pageBuilder: (
-                            BuildContext context,
-                            Animation animation,
-                            Animation secondaryAnimation
-                            ) => FadeTransition(
-                        opacity: animation,
-                        child: isLogin ? MainPage() : LoginPage(),
-                    ),
-                ), (Route<dynamic> route) => false);
+                Navigator.of(context).pushAndRemoveUntil(
+                    PageRouteBuilder(
+                        transitionDuration: Duration(milliseconds: isLogin ? 300 : 1000),
+                        pageBuilder: (BuildContext context, Animation animation, Animation secondaryAnimation) {
+                            return FadeTransition(
+                                opacity: animation,
+                                child: isLogin ? MainPage() : LoginPage(),
+                            );
+                        },
+                    ), (Route<dynamic> route) => false,
+                );
             } catch (e) {
                 debugPrint("$e");
             }

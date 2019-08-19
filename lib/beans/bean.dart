@@ -148,3 +148,63 @@ class WebApp {
         "Z0": "系统设置",
     };
 }
+
+///
+/// 课程
+/// [name] 课程名称, [time] 上课时间, [location] 上课地点, [className] 班级名称, [teacher] 教师名称,
+/// [day] 上课日, [startWeek] 开始周, [endWeek] 结束周,
+/// [classesName] 共同上课的班级,
+/// [isEleven] 是否第十一节
+///
+class Course {
+    String name, time, location, className, teacher;
+    int day, startWeek, endWeek;
+    List<String> classesName;
+    bool isEleven;
+
+    Course({
+        this.name,
+        this.time,
+        this.location,
+        this.className,
+        this.teacher,
+        this.day,
+        this.startWeek,
+        this.endWeek,
+        this.classesName,
+        this.isEleven,
+    });
+
+    factory Course.fromJson(Map<String, dynamic> json) {
+        List weeks = json['allWeek'].split('-');
+        return Course(
+            name: json['couName'],
+            time: json['coudeTime'],
+            location: json['couRoom'],
+            className: json['className'],
+            teacher: json['couTeaName'],
+            day: json['couDayTime'],
+            startWeek: int.parse(weeks[0]),
+            endWeek: int.parse(weeks[1]),
+            classesName: json['comboClassName'].split(','),
+            isEleven: json['three'] != 'n',
+        );
+    }
+
+    @override
+    String toString() {
+        return "Course ${JsonEncoder.withIndent("  ").convert({
+            'name': name,
+            'time': time,
+            'room': location,
+            'className': className,
+            'teacher': teacher,
+            'day': day,
+            'startWeek': startWeek,
+            'endWeek': endWeek,
+            'classesName': classesName,
+            'isEleven': isEleven,
+        })}";
+    }
+
+}

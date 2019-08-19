@@ -1,8 +1,4 @@
-import 'dart:async';
 import 'dart:core';
-
-import 'package:openjmu_lite/apis/user_api.dart';
-import 'package:openjmu_lite/utils/net_utils.dart';
 
 
 class API {
@@ -23,10 +19,7 @@ class API {
     static final String oap99Host = "https://oap99.jmu.edu.cn";
     static final String middle99Host = "https://middle99.jmu.edu.cn";
     static final String upApiHost = "https://upapi.jmu.edu.cn";
-    static final String jwglHost = "http://jwgls.jmu.edu.cn";
-    static final String pushHost = "http://push.openjmu.xyz:4443";
-
-    static final String pushUpload = "$pushHost/push";
+    static final String labsHost = "http://labs.jmu.edu.cn";
 
     /// 认证相关
     static final String login = "$oa99Host/v2/passport/api/user/login1";
@@ -61,16 +54,6 @@ class API {
     static final String webAppLists = "$oap99Host/app/unitmenu?cfg=1";
     static final String webAppIcons = "$oap99Host/app/menuicon?size=f128&unitid=55&";
 
-    /// 资讯相关
-    static String newsList({int maxTimeStamp, int size}) {
-        return "$middle99Host/mg/api/aid/posts_list/region_type/1"
-                "${maxTimeStamp != null ? "/max_ts/$maxTimeStamp" : ""}"
-                "/size/${size ?? 20}"
-        ;
-    }
-    static final String newsDetail = "$middle99Host/mg/api/aid/posts_detail/post_type/3/post_id/";
-    static final String newsImageList = "$file99Host/show/file/fid/";
-
     /// 微博相关
     static final String postUnread = "$wbHost/user_api/unread";
     static final String postList = "$wbHost/topic_api/square";
@@ -90,34 +73,6 @@ class API {
 
     static String commentImageUrl(int id, String type) => "$wbHost/upload_api/image/unit_id/55/id/$id/type/$type?env=jmu";
 
-    /// 小组相关
-    static final String teamInfo = "$middle99Host/mg/api/aid/team_info";
-    static String teamPosts({int teamId, int size, int regionType, int postType, int maxTimeStamp}) {
-        return "$middle99Host/mg/api/aid/posts_list"
-                "/region_type/${regionType ?? 8}"
-                "/post_type/${postType ?? 2}"
-                "/region_id/$teamId"
-                "${maxTimeStamp != null ? "/max_ts$maxTimeStamp}" : ""}"
-                "/size/${size ?? 30}"
-        ;
-    }
-    static String teamPostDetail({int postId, int postType}) {
-        return "$middle99Host/mg/api/aid/posts_detail/post_type/${postType ?? 2}/post_id/$postId";
-    }
-    static String teamPostCommentsList({int postId, int size, int regionType, int postType, int page}) {
-        return "$middle99Host/mg/api/aid/posts_list"
-                "/region_type/${regionType ?? 128}"
-                "/post_type/${postType ?? 7}"
-                "/region_id/$postId"
-                "/page/${page ?? 1}"
-                "/replys/2"
-                "/size/${size ?? 30}"
-        ;
-    }
-    static String teamFile({int fid, String sid}) {
-        return "$file99Host/show/file/fid/$fid/sid/${sid ?? UserAPI.currentUser.sid}";
-    }
-
     /// 通知相关
     static final String postListByMention = "$wbHost/topic_api/mentionme";
     static final String commentListByReply = "$wbHost/reply_api/replyme";
@@ -133,52 +88,14 @@ class API {
     static final String task = "$oa99Host/ajax/tasks";
 
     /// 课程表相关
-    static final String courseSchedule = "http://labs.jmu.edu.cn/courseSchedule/course.html";
-    static final String courseScheduleTeacher = "http://labs.jmu.edu.cn/courseSchedule/Tcourse.html";
+    static final String courseSchedule = "$labsHost/courseSchedule/course.html";
+    static final String courseScheduleTeacher = "$labsHost/courseSchedule/Tcourse.html";
 
-    /// 教务相关
-    static final String jwglLogin = "$jwglHost/login.aspx";
-    static final String jwglCheckCode = "$jwglHost/Common/CheckCode.aspx";
-    static final String jwglStudentDefault = "$jwglHost/Student/default.aspx";
-    static final String jwglStudentScoreAll = "$jwglHost/Student/ScoreCourse/ScoreAll.aspx";
-
-    /// 礼物相关
-    static String backPackItemType() {
-        return "$wpHost/itemc/itemtypelist?"
-                "sid=${UserAPI.currentUser.sid}"
-                "&cuid=${UserAPI.currentUser.uid}"
-                "&updatetime=0"
-        ;
-    }
-    static String backPackReceiveList({int count = 20, String start = "0"}) {
-        return "$wpHost/itemc/recvlist?"
-                "sid=${UserAPI.currentUser.sid}"
-                "&cuid=${UserAPI.currentUser.uid}"
-                "&count=$count"
-                "&start=$start"
-        ;
-    }
-    static String backPackMyItemList({int count = 20, String start = "0"}) {
-        return "$wpHost/itemc/myitemlist?"
-                "sid=${UserAPI.currentUser.sid}"
-                "&cuid=${UserAPI.currentUser.uid}"
-                "&count=$count"
-                "&start=$start"
-        ;
-    }
-    static String backPackItemIcon({int itemType}) {
-        return "$wpHost/itemc/icon?"
-                "itemtype=${itemType ?? 10000}"
-                "&size=1"
-                "&icontime=0"
-        ;
-    }
+    static final String courseScheduleCourses = "$labsHost/courseSchedule/StudentCourseSchedule";
+    static final String courseScheduleClassRemark = "$labsHost/courseSchedule/StudentClassRemark";
+    static final String courseScheduleTermLists = "$labsHost/courseSchedule/GetSemesters";
 
     /// 静态scheme正则
     static final RegExp urlReg = RegExp(r"(https?)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]");
     static final RegExp schemeUserPage = RegExp(r"^openjmu://user/*");
-}
-
-class DateAPI {
-    static Future getCurrentWeek () async => NetUtils.get(API.firstDayOfTerm);
 }

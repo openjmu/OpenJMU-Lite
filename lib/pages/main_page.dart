@@ -1,8 +1,16 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+import 'package:openjmu_lite/apis/date_api.dart';
 import 'package:openjmu_lite/apis/user_api.dart';
 import 'package:openjmu_lite/beans/event.dart';
 import 'package:openjmu_lite/constants/constants.dart';
+import 'package:openjmu_lite/pages/course_schedule_page.dart';
 import 'package:openjmu_lite/utils/data_utils.dart';
 
 
@@ -13,28 +21,223 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
     BuildContext pageContext;
+    Color themeColor = Constants.appThemeColor;
+    int _index = 0;
+
+    int currentWeek;
+    DateTime now;
+    String hello = "你好";
+    Timer updateHelloTimer;
 
     @override
     void initState() {
+        updateHello();
+        getCurrentWeek();
+        if (mounted && updateHelloTimer != null) {
+            updateHelloTimer = Timer.periodic(Duration(minutes: 1), (timer) {
+                updateHello();
+                getCurrentWeek();
+            });
+        }
+
         Constants.eventBus.on<LogoutEvent>().listen((event) {
-            Navigator.of(context).pushReplacementNamed("/login");
+            Navigator.of(pageContext).pushReplacementNamed("/login");
         });
+
         super.initState();
+    }
+
+    @override
+    void didChangeDependencies() {
+        pageContext = context;
+        super.didChangeDependencies();
+    }
+
+    Widget avatar() {
+        final double size = 60.0;
+        return SizedBox(
+            width: size,
+            height: size,
+            child: ClipRRect(
+                borderRadius: BorderRadius.circular(size / 2),
+                child: Image(
+                    image: UserAPI.getAvatarProvider(),
+                ),
+            ),
+        );
+    }
+
+    Widget scan(context) {
+        final double size = 60.0;
+        return Container(
+            width: size,
+            height: size,
+            decoration: BoxDecoration(
+                color: Colors.grey.withAlpha(125),
+                shape: BoxShape.circle,
+            ),
+            child: IconButton(
+                padding: EdgeInsets.zero,
+                icon: SvgPicture.asset(
+                    "assets/icons/scan.svg",
+                    color: Colors.white,
+                    width: 36.0,
+                    height: 36.0,
+                ),
+                onPressed: () async {
+                    Map<PermissionGroup, PermissionStatus>permissions = await PermissionHandler().requestPermissions([
+                        PermissionGroup.camera,
+                    ]);
+                    if (permissions[PermissionGroup.camera] == PermissionStatus.granted) {
+                        Navigator.of(context).pushNamed("/scanqrcode");
+                    }
+                },
+            ),
+        );
+    }
+
+    Widget currentDay(DateTime now) => RichText(
+        text: TextSpan(
+            children: <TextSpan>[
+                TextSpan(
+                    text: "${UserAPI.currentUser.name}",
+                    style: TextStyle(
+                        fontSize: 32.0,
+                        fontWeight: FontWeight.bold,
+                    ),
+                ),
+                TextSpan(
+                    text: "，$hello~\n",
+                    style: TextStyle(
+                        fontSize: 32.0,
+                    ),
+                ),
+                TextSpan(text: "今天是"),
+                if (currentWeek != null) TextSpan(text: "第$currentWeek周，"),
+                TextSpan(text: "${DateFormat("MMMdd日，", "zh_CN").format(now)}"),
+                TextSpan(text: "${DateFormat("EEEE。", "zh_CN").format(now)}"),
+            ],
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 18.0,
+            ),
+        ),
+    );
+
+    void getCurrentWeek() async {
+        String _day = jsonDecode((await DateAPI.getCurrentWeek()).data)['start'];
+//        String _day = "2019-08-12";
+        DateAPI.startDate = DateTime.parse(_day);
+        DateTime currentDate = DateTime.now();
+        DateAPI.difference = DateAPI.startDate.difference(currentDate).inDays - 1;
+        DateAPI.currentWeek = - (DateAPI.difference / 7).floor();
+        if (DateAPI.currentWeek >= 1 && DateAPI.currentWeek <= 20) {
+            currentWeek = DateAPI.currentWeek;
+        } else {
+            currentWeek = null;
+        }
+        if (mounted) setState(() {});
+    }
+
+    void updateHello() {
+        int hour = DateTime.now().hour;
+        setState(() {
+            now = DateTime.now();
+
+            if (hour >= 0 && hour < 6) {
+                hello = "深夜了，注意休息";
+            } else if (hour >= 6 && hour < 8) {
+                hello = "早上好";
+            } else if (hour >= 8 && hour < 11) {
+                hello = "上午好";
+            } else if (hour >= 11 && hour < 14) {
+                hello = "中午好";
+            } else if (hour >= 14 && hour < 18) {
+                hello = "下午好";
+            } else if (hour >= 18 && hour < 20) {
+                hello = "傍晚好";
+            } else if (hour >= 20 && hour <= 24) {
+                hello = "晚上好";
+            }
+        });
+    }
+
+    void selectItem(index) {
+        setState(() {
+            _index = index;
+        });
     }
 
     @override
     Widget build(BuildContext context) {
         pageContext = context;
         return Scaffold(
-            appBar: AppBar(
-                title: Text("${UserAPI.currentUser.name}"),
-                actions: <Widget>[
-                    IconButton(
-                        icon: Icon(Icons.exit_to_app),
-                        onPressed: () {
-                            DataUtils.logout();
-                        },
-                    )
+            backgroundColor: Constants.appThemeColor,
+            body: SafeArea(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                        Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0,
+                                vertical: 16.0,
+                            ),
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                    avatar(),
+                                    Expanded(child: SizedBox()),
+                                    IconButton(
+                                        icon: Icon(Icons.exit_to_app),
+                                        onPressed: () async {
+                                            DataUtils.logout();
+                                        },
+                                    ),
+                                    scan(context),
+                                ],
+                            ),
+                        ),
+                        Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0,
+                                vertical: 8.0,
+                            ),
+                            child: Row(
+                                children: <Widget>[
+                                    currentDay(now),
+                                ],
+                            ),
+                        ),
+                        Expanded(
+                            child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(30.0),
+                                        topRight: Radius.circular(30.0),
+                                    ),
+                                    color: Colors.white,
+                                ),
+                                child: CourseSchedulePage(),
+                            ),
+                        ),
+                    ],
+                ),
+            ),
+            bottomNavigationBar: BottomNavigationBar(
+                type: BottomNavigationBarType.shifting,
+                currentIndex: _index,
+                selectedItemColor: themeColor,
+                unselectedItemColor: Colors.grey,
+                onTap: selectItem,
+                items: <BottomNavigationBarItem>[
+                    BottomNavigationBarItem(
+                            icon: Icon(Icons.calendar_today),
+                            title: Text("首页")
+                    ),
+                    BottomNavigationBarItem(
+                            icon: Icon(Icons.person),
+                            title: Text("我的")
+                    ),
                 ],
             ),
         );

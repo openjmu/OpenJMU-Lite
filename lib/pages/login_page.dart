@@ -67,19 +67,22 @@ class _LoginPageState extends State<LoginPage> {
                         color: Colors.white,
                         fontSize: 50.0,
                         fontWeight: FontWeight.bold,
+                        fontFamily: "ProductSans",
+                        letterSpacing: 1.0,
                     ),
                 ),
-                SizedBox(height: 20.0),
+                SizedBox(height: 10.0),
                 Container(
-                    color: Colors.white,
-                    padding: const EdgeInsets.all(8.0),
+                    color: Color(0x99ffffff),
+                    padding: EdgeInsets.only(left: 8.0, right: 8.0, top: 4.0),
                     child: Text(
                         "LITE",
                         style: TextStyle(
                             color: Constants.appThemeColor,
-                            fontSize: 30.0,
+                            fontSize: 24.0,
                             fontWeight: FontWeight.bold,
-                            letterSpacing: 8.0,
+                            fontFamily: "ProductSans",
+                            letterSpacing: 4.0,
                         ),
                     ),
                 ),
@@ -309,32 +312,43 @@ class _LoginPageState extends State<LoginPage> {
         pageContext = context;
         return Scaffold(
             backgroundColor: Constants.appThemeColor,
-            body: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
+            body: Stack(
                 children: <Widget>[
-                    Expanded(
-                        child: Center(
-                            child: logo(),
+                    Positioned(
+                        top: 0.0,
+                        child: Image.asset(
+                            "images/login_bg.png",
+                            fit: BoxFit.fitWidth,
                         ),
                     ),
-                    ClipRRect(
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(30.0),
-                            topRight: Radius.circular(30.0),
-                        ),
-                        child: Container(
-                            color: Colors.white,
-                            padding: EdgeInsets.all(40.0),
-                            child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                    loginForm(),
-                                    loginButton(context),
-                                    actions(context),
-                                ],
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                            Expanded(
+                                child: Center(
+                                    child: logo(),
+                                ),
                             ),
-                        ),
-                    )
+                            ClipRRect(
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(30.0),
+                                    topRight: Radius.circular(30.0),
+                                ),
+                                child: Container(
+                                    color: Colors.white,
+                                    padding: EdgeInsets.all(40.0),
+                                    child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                            loginForm(),
+                                            loginButton(context),
+                                            actions(context),
+                                        ],
+                                    ),
+                                ),
+                            )
+                        ],
+                    ),
                 ],
             ),
         );

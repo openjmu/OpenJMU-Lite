@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:openjmu_lite/pages/login_page.dart';
 import 'package:openjmu_lite/pages/main_page.dart';
 import 'package:openjmu_lite/pages/splash_page.dart';
+import 'package:openjmu_lite/pages/scan_qrcode_page.dart';
 
 class RouterUtils {
     static final String pathDivider = "/";
@@ -12,5 +13,7 @@ class RouterUtils {
         "${pathDivider}splash": (BuildContext context) => SplashPage(),
         "${pathDivider}login": (BuildContext context) => LoginPage(),
         "${pathDivider}main": (BuildContext context) => MainPage(),
+
+        "${pathDivider}scanqrcode": (BuildContext context) => ScanQrCodePage(),
     };
 }
