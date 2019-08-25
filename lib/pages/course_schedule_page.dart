@@ -43,12 +43,9 @@ class _CourseSchedulePageState extends State<CourseSchedulePage> with TickerProv
             List<Course> _list = [], _listToday = [], _listWeek = [];
             _courses.forEach((course) {
                 Course _c = Course.fromJson(course);
-                bool inToday = CourseAPI.inCurrentDay(_c) && CourseAPI.inCurrentWeek(_c);
-                bool inWeek = CourseAPI.inCurrentDay(_c) && CourseAPI.inCurrentWeek(_c);
-
-                _list.add(Course.fromJson(course));
-                if (inToday) _listToday.add(Course.fromJson(course));
-                if (inWeek) _listToday.add(Course.fromJson(course));
+                _list.add(_c);
+                if (CourseAPI.inCurrentDay(_c) && CourseAPI.inCurrentWeek(_c)) _listToday.add(_c);
+                if (CourseAPI.inCurrentWeek(_c)) _listWeek.add(_c);
             });
             courses = _list;
             coursesToday = _listToday;
@@ -65,7 +62,7 @@ class _CourseSchedulePageState extends State<CourseSchedulePage> with TickerProv
             course.name,
             style: TextStyle(
                 color: CourseAPI.isActive(course) ? Colors.white : Colors.black,
-                fontSize: 24.0,
+                fontSize: Constants.size(20.0),
                 fontWeight: FontWeight.bold,
             ),
             overflow: TextOverflow.ellipsis,
@@ -77,17 +74,17 @@ class _CourseSchedulePageState extends State<CourseSchedulePage> with TickerProv
             CourseAPI.getCourseTime(context, course, type),
             style: TextStyle(
                 color: CourseAPI.isActive(course) ? Colors.white : Colors.black,
-                fontSize: 17.0,
+                fontSize: Constants.size(15.0),
             ),
         );
     }
 
-    Widget courseLocation(Course course) {
+    Widget courseLocation(Course course, CourseType type) {
         return Text(
-            course.location,
+            CourseAPI.getCourseLocation(context, course, type),
             style: TextStyle(
                 color: CourseAPI.isActive(course) ? Colors.white : Colors.black,
-                fontSize: 20.0,
+                fontSize: Constants.size(15.0),
             ),
         );
     }
@@ -95,26 +92,26 @@ class _CourseSchedulePageState extends State<CourseSchedulePage> with TickerProv
     Widget courseWidget(Course course, CourseType type) {
         return Expanded(
             child: Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 24.0,
-                    vertical: 12.0,
+                padding: EdgeInsets.symmetric(
+                    horizontal: Constants.size(24.0),
+                    vertical: Constants.size(8.0),
                 ),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16.0),
+                    borderRadius: BorderRadius.circular(Constants.size(16.0)),
                     color: CourseAPI.isActive(course)
                             ? Constants.appThemeColor
                             : Theme.of(context).canvasColor
                     ,
                 ),
                 child: SizedBox(
-                    height: 100.0,
+                    height: Constants.size(84.0),
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                             courseName(course),
                             courseTime(course, type),
-                            if (course.location != "") courseLocation(course),
+                            if (course.location != "") courseLocation(course, type),
                         ],
                     ),
                 ),
@@ -126,31 +123,30 @@ class _CourseSchedulePageState extends State<CourseSchedulePage> with TickerProv
         return Column(
             children: <Widget>[
                 Container(
-                    width: 24.0,
-                    height: 24.0,
+                    width: Constants.size(18.0),
+                    height: Constants.size(18.0),
                     decoration: BoxDecoration(
                         border: !CourseAPI.isActive(course) ? Border.all(
                             color: Constants.appThemeColor,
-                            width: 4.0,
+                            width: Constants.size(3.0),
                         ) : null,
                         color: CourseAPI.isActive(course) ? Constants.appThemeColor : null,
                         shape: BoxShape.circle,
                     ),
-                    child: CourseAPI.isActive(course) ? Stack(
-                        children: <Widget>[
-                            Icon(
+                    child: CourseAPI.isActive(course) ? Center(
+                            child: Icon(
                                 Icons.check,
                                 color: Colors.white,
+                                size: Constants.size(16.0),
                             ),
-                        ],
                     ) : null,
                 ),
-                SizedBox(height: 8.0),
+                SizedBox(height: Constants.size(8.0)),
                 Container(
-                    width: 6.0,
-                    height: 124.0,
+                    width: Constants.size(4.0),
+                    height: Constants.size(100.0),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
+                        borderRadius: BorderRadius.circular(Constants.size(10.0)),
                         color: CourseAPI.isActive(course)
                                 ? Constants.appThemeColor
                                 : Constants.appThemeColor.withAlpha(80)
@@ -162,25 +158,34 @@ class _CourseSchedulePageState extends State<CourseSchedulePage> with TickerProv
     }
 
     Widget courseTabs(context) {
-        return Row(
-            children: <Widget>[
-                Flexible(
-                    child: TabBar(
-                        isScrollable: true,
-                        controller: _tabController,
-                        labelColor: Theme.of(context).textTheme.title.color,
-                        labelStyle: Theme.of(context).textTheme.title.copyWith(
-                            fontWeight: FontWeight.bold,
+        return SizedBox(
+            height: Constants.size(36.0),
+            child: Row(
+                children: <Widget>[
+                    Flexible(
+                        child: TabBar(
+                            isScrollable: true,
+                            controller: _tabController,
+                            labelColor: Theme.of(context).textTheme.title.color,
+                            labelStyle: Theme.of(context).textTheme.title.copyWith(
+                                fontSize: Constants.size(16.0),
+                                fontWeight: FontWeight.bold,
+                            ),
+                            labelPadding: EdgeInsets.symmetric(horizontal: Constants.size(24.0)),
+                            unselectedLabelStyle: Theme.of(context).textTheme.title.copyWith(
+                                fontSize: Constants.size(16.0),
+                                fontWeight: FontWeight.normal,
+                            ),
+                            indicatorWeight: Constants.size(3.0),
+                            tabs: <Tab>[
+                                Tab(text: "今日"),
+                                Tab(text: "本周"),
+                                Tab(text: "学期"),
+                            ],
                         ),
-                        unselectedLabelStyle: Theme.of(context).textTheme.title,
-                        tabs: <Tab>[
-                            Tab(text: "今日",),
-                            Tab(text: "本周",),
-                            Tab(text: "学期",),
-                        ],
                     ),
-                ),
-            ],
+                ],
+            ),
         );
     }
 
@@ -211,20 +216,20 @@ class _CourseSchedulePageState extends State<CourseSchedulePage> with TickerProv
             physics: const BouncingScrollPhysics(),
             itemCount: _courses.length,
             itemBuilder: (context, index) {
-                Course course = courses[index];
+                Course course = _courses[index];
                 return Container(
                     margin: EdgeInsets.only(
-                        top: index == 0 ? 20.0 : 8.0,
-                        bottom: index == _courses.length - 1 ? 20.0 : 8.0,
+                        top: Constants.size(index == 0 ? 20.0 : 8.0),
+                        bottom: Constants.size(index == _courses.length - 1 ? 20.0 : 8.0),
                     ),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 30.0,
+                    padding: EdgeInsets.symmetric(
+                        horizontal: Constants.size(24.0),
                     ),
                     child: Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
                             timelineIndicator(course),
-                            SizedBox(width: 20.0),
+                            SizedBox(width: Constants.size(16.0)),
                             courseWidget(course, type),
                         ],
                     ),
@@ -235,7 +240,7 @@ class _CourseSchedulePageState extends State<CourseSchedulePage> with TickerProv
                 emptyTips,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    fontSize: 24.0,
+                    fontSize: Constants.size(18.0),
                 ),
             ),
         )
@@ -243,8 +248,8 @@ class _CourseSchedulePageState extends State<CourseSchedulePage> with TickerProv
         DecoratedBox(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30.0),
-                    topRight: Radius.circular(30.0),
+                    topLeft: Radius.circular(Constants.size(30.0)),
+                    topRight: Radius.circular(Constants.size(30.0)),
                 ),
                 color: Colors.white,
             ),

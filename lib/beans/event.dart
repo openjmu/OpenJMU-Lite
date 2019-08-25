@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart' show BuildContext;
+
 import 'package:openjmu_lite/beans/bean.dart';
 
 /// Event for testing.
@@ -9,12 +11,19 @@ class TestEvent {
 }
 
 class LoginEvent {
+    BuildContext context;
     bool isWizard;  // 账号是否已通过新人引导
-    LoginEvent(bool isWizard) {
+    LoginEvent(BuildContext context, bool isWizard) {
+        this.context = context;
         this.isWizard = isWizard;
     }
 }
-class LogoutEvent {}
+class LogoutEvent {
+    BuildContext context;
+    LogoutEvent(BuildContext context) {
+        this.context = context;
+    }
+}
 class LoginFailedEvent {}
 class TicketGotEvent {
     bool isWizard;  // 账号是否已通过新人引导

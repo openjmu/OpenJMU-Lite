@@ -9,6 +9,8 @@ import 'package:event_bus/event_bus.dart';
 class Constants {
     static final appTitle = 'OpenJMU Lite';
     static final appThemeColor = Color.fromARGB(0xff, 212, 46, 48);
+    static double fontScale = 1.0;
+    static double size(double size) => size * fontScale;
 
     static final EventBus eventBus = EventBus();
 

@@ -24,9 +24,7 @@ class UserAPI {
     }
 
     static Future logout() async {
-        NetUtils.postWithCookieSet(API.logout).then((response) {
-            Constants.eventBus.fire(LogoutEvent());
-        });
+        return NetUtils.postWithCookieSet(API.logout);
     }
 
     static UserInfo createUserInfo(Map<String, dynamic> userData) {

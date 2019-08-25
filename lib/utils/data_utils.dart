@@ -42,7 +42,7 @@ class DataUtils {
                 setUserInfo(userInfo);
                 await SpUtils.saveLoginInfo(userInfo);
                 UserAPI.setBlacklist((await UserAPI.getBlacklist()).data["users"]);
-                Constants.eventBus.fire(LoginEvent(isWizard));
+                Constants.eventBus.fire(LoginEvent(context, isWizard));
                 showShortToast("登录成功！");
             } catch (e) {
                 Constants.eventBus.fire(LoginFailedEvent());
@@ -60,9 +60,10 @@ class DataUtils {
         });
     }
 
-    static Future logout() async {
+    static Future logout(context) async {
+        await UserAPI.logout();
         await SpUtils.clearLoginInfo();
-        Constants.eventBus.fire(LogoutEvent());
+        Constants.eventBus.fire(LogoutEvent(context));
         showShortToast("退出登录成功");
     }
 

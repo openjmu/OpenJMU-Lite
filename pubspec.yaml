@@ -1,7 +1,7 @@
 name: openjmu_lite
 description: A lite version of OpenJMU for essential function.
 
-version: 0.1.0+2
+version: 0.1.1+3
 
 environment:
     sdk: ">=2.2.2 <3.0.0"

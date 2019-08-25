@@ -79,8 +79,26 @@ class CourseAPI {
                 result = "${start.format(context)} - ${end.format(context)}　星期${courseDayTime[course.day]}";
                 break;
             case CourseType.term:
-                result = "${start.format(context)} - ${end.format(context)}　${courseTimeChinese[course.time]}　周${courseDayTime[course.day]}";
+                result = "${start.format(context)} - ${end.format(context)}"
+                        "　"
+                        "周${courseDayTime[course.day]}"
+                        "　"
+                        "${course.startWeek}-${course.endWeek}周"
+                ;
                 break;
+        }
+        return result;
+    }
+
+    static String getCourseLocation(BuildContext context, Course course, CourseType type) {
+        String location = course.location;
+        String result;
+        switch (type) {
+            case CourseType.term:
+                result = "${courseTimeChinese[course.time]}　${course.location}";
+                break;
+            default:
+                result = "$location";
         }
         return result;
     }

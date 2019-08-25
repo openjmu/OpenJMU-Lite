@@ -18,8 +18,6 @@ class _LoginPageState extends State<LoginPage> {
     final TextEditingController _usernameController = TextEditingController();
     final TextEditingController _passwordController = TextEditingController();
 
-    BuildContext pageContext;
-
     String _username = "";
     String _password = "";
 
@@ -31,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
         Constants.eventBus
             ..on<LoginEvent>().listen((event) {
                 if (!event.isWizard) {}
-                Navigator.of(pageContext).pushReplacementNamed("/main");
+                Navigator.of(event.context).pushReplacementNamed("/main");
             })
             ..on<LoginFailedEvent>().listen((event) {
                 _isLoading = false;
@@ -65,24 +63,28 @@ class _LoginPageState extends State<LoginPage> {
                     "OpenJMU",
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 50.0,
+                        fontSize: Constants.size(40.0),
                         fontWeight: FontWeight.bold,
                         fontFamily: "ProductSans",
                         letterSpacing: 1.0,
                     ),
                 ),
-                SizedBox(height: 10.0),
+                SizedBox(height: Constants.size(10.0),),
                 Container(
                     color: Color(0x99ffffff),
-                    padding: EdgeInsets.only(left: 8.0, right: 8.0, top: 4.0),
+                    padding: EdgeInsets.only(
+                        left: Constants.size(8.0),
+                        right: Constants.size(8.0),
+                        top: Constants.size(4.0),
+                    ),
                     child: Text(
                         "LITE",
                         style: TextStyle(
                             color: Constants.appThemeColor,
-                            fontSize: 24.0,
+                            fontSize: Constants.size(20.0),
                             fontWeight: FontWeight.bold,
                             fontFamily: "ProductSans",
-                            letterSpacing: 4.0,
+                            letterSpacing: Constants.size(4.0),
                         ),
                     ),
                 ),
@@ -105,9 +107,9 @@ class _LoginPageState extends State<LoginPage> {
 
     Widget usernameTextField() {
         return Container(
-            margin: EdgeInsets.only(bottom: 30.0),
+            margin: EdgeInsets.only(bottom: Constants.size(30.0)),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16.0),
+                borderRadius: BorderRadius.circular(Constants.size(16.0)),
                 color: Colors.grey.withAlpha(60),
             ),
             child: TextFormField(
@@ -115,16 +117,19 @@ class _LoginPageState extends State<LoginPage> {
                 decoration: InputDecoration(
                     border: InputBorder.none,
                     focusedBorder: InputBorder.none,
-                    contentPadding: EdgeInsets.all(16.0),
+                    contentPadding: EdgeInsets.symmetric(
+                        vertical: Constants.size(12.0),
+                        horizontal: Constants.size(16.0),
+                    ),
                     labelText: '工号/学号',
                     labelStyle: TextStyle(
                         color: Theme.of(context).textTheme.title.color,
-                        fontSize: 20.0,
+                        fontSize: Constants.size(18.0),
                     ),
                 ),
                 style: TextStyle(
                     color: Theme.of(context).textTheme.title.color,
-                    fontSize: 20.0,
+                    fontSize: Constants.size(18.0),
                 ),
                 cursorColor: Constants.appThemeColor,
                 onSaved: (String value) => _username = value,
@@ -138,9 +143,9 @@ class _LoginPageState extends State<LoginPage> {
 
     Widget passwordTextField() {
         return Container(
-            margin: EdgeInsets.only(bottom: 30.0),
+            margin: EdgeInsets.only(bottom: Constants.size(30.0),),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16.0),
+                borderRadius: BorderRadius.circular(Constants.size(16.0)),
                 color: Colors.grey.withAlpha(60),
             ),
             child: TextFormField(
@@ -153,11 +158,14 @@ class _LoginPageState extends State<LoginPage> {
                 decoration: InputDecoration(
                     border: InputBorder.none,
                     focusedBorder: InputBorder.none,
-                    contentPadding: EdgeInsets.all(16.0),
+                    contentPadding: EdgeInsets.symmetric(
+                        vertical: Constants.size(12.0),
+                        horizontal: Constants.size(16.0),
+                    ),
                     labelText: '密码',
                     labelStyle: TextStyle(
                         color: Theme.of(context).textTheme.title.color,
-                        fontSize: 20.0,
+                        fontSize: Constants.size(18.0),
                     ),
                     suffixIcon: IconButton(
                         icon: Icon(
@@ -165,7 +173,7 @@ class _LoginPageState extends State<LoginPage> {
                                     ? Icons.visibility
                                     : Icons.visibility_off,
                             color: _defaultIconColor,
-                            size: 24.0,
+                            size: Constants.size(20.0),
                         ),
                         onPressed: () {
                             setState(() {
@@ -179,7 +187,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 style: TextStyle(
                     color: Theme.of(context).textTheme.title.color,
-                    fontSize: 20.0,
+                    fontSize: Constants.size(18.0),
                 ),
                 cursorColor: Constants.appThemeColor,
             ),
@@ -188,41 +196,49 @@ class _LoginPageState extends State<LoginPage> {
 
     Widget loginButton(context) {
         return Container(
-            margin: EdgeInsets.only(bottom: 20.0),
+            margin: EdgeInsets.only(bottom: Constants.size(20.0)),
             width: double.infinity,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16.0),
+                borderRadius: BorderRadius.circular(Constants.size(16.0)),
                 color: Constants.appThemeColor,
             ),
             child: !_isLoading
                     ?
             FlatButton(
                 padding: EdgeInsets.symmetric(
-                    vertical: 18.0,
+                    vertical: Constants.size(17.0),
                 ),
                 onPressed: () { loginButtonPressed(context); },
                 child: Text(
                     "登录",
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 24.0,
-                        fontWeight: FontWeight.bold
+                        fontSize: Constants.size(20.0),
+                        fontWeight: FontWeight.bold,
                     ),
                 ),
             )
                     :
-            Container(
-                height: 65.0,
-                child: Constants.progressIndicator(color: Colors.white),
-            )
-            ,
+            Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                    Padding(
+                        padding: EdgeInsets.symmetric(vertical: Constants.size(17.0)),
+                        child: SizedBox(
+                            width: Constants.size(24.0),
+                            height: Constants.size(24.0),
+                            child: Constants.progressIndicator(color: Colors.white),
+                        ),
+                    ),
+                ],
+            ),
         );
     }
 
     Widget actions(context) {
         return RichText(text: TextSpan(
             style: TextStyle(
-                fontSize: 16.0,
+                fontSize: Constants.size(13.0),
                 color: Colors.grey[900],
             ),
             children: <TextSpan>[
@@ -309,34 +325,32 @@ class _LoginPageState extends State<LoginPage> {
 
     @override
     Widget build(BuildContext context) {
-        pageContext = context;
         return Scaffold(
             backgroundColor: Constants.appThemeColor,
             body: Stack(
                 children: <Widget>[
                     Positioned(
                         top: 0.0,
+                        left: 0.0,
+                        right: 0.0,
                         child: Image.asset(
                             "images/login_bg.png",
-                            fit: BoxFit.fitWidth,
+                            height: MediaQuery.of(context).size.height / 3 * 2,
+                            fit: BoxFit.fitHeight,
                         ),
                     ),
                     Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
-                            Expanded(
-                                child: Center(
-                                    child: logo(),
-                                ),
-                            ),
+                            Expanded(child: Center(child: logo())),
                             ClipRRect(
                                 borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(30.0),
-                                    topRight: Radius.circular(30.0),
+                                    topLeft: Radius.circular(Constants.size(30.0),),
+                                    topRight: Radius.circular(Constants.size(30.0),),
                                 ),
                                 child: Container(
                                     color: Colors.white,
-                                    padding: EdgeInsets.all(40.0),
+                                    padding: EdgeInsets.all(Constants.size(40.0),),
                                     child: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: <Widget>[
