@@ -34,11 +34,17 @@ class _LiteAppState extends State<LiteApp> {
             routes: RouterUtils.routes,
             theme: ThemeData(
                 primarySwatch: Colors.red,
+                appBarTheme: AppBarTheme(
+                    color: Constants.appThemeColor,
+                ),
+                pageTransitionsTheme: PageTransitionsTheme(
+                    builders: {
+                        TargetPlatform.iOS: FadePageTransitionsBuilder(),
+                        TargetPlatform.android: FadePageTransitionsBuilder(),
+                    },
+                ),
             ),
             home: SplashPage(),
-            onGenerateRoute: (RouteSettings settings) {
-                return CupertinoPageRoute(builder: RouterUtils.routes[settings.name]);
-            },
             localizationsDelegates: [
                 GlobalMaterialLocalizations.delegate,
                 GlobalWidgetsLocalizations.delegate,

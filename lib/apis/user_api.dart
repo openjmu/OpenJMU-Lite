@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -61,6 +62,19 @@ class UserAPI {
         name: tagData['tagname'],
     );
 
+    static Widget getAvatarWidget({double size = 50.0, int uid}) {
+        final double _s = Constants.size(size);
+        return Hero(
+            tag: "user_${uid ?? currentUser.uid}",
+            child: SizedBox(
+                width: _s,
+                height: _s,
+                child: CircleAvatar(
+                    backgroundImage: getAvatarProvider(uid: uid),
+                ),
+            ),
+        );
+    }
     /// Update cache network image provider after avatar is updated.
     static int avatarLastModified = DateTime.now().millisecondsSinceEpoch;
     static CachedNetworkImageProvider getAvatarProvider({int uid, int size, int t}) {
@@ -73,7 +87,6 @@ class UserAPI {
             cacheManager: DefaultCacheManager(),
         );
     }
-
     static void updateAvatarProvider() {
         CacheUtils.remove("${API.userAvatarInSecure}?uid=${currentUser.uid}&size=f152&_t=$avatarLastModified");
         CacheUtils.remove("${API.userAvatarInSecure}?uid=${currentUser.uid}&size=f640&_t=$avatarLastModified");

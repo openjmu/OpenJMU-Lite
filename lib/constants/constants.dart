@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
 
-import 'package:flutter/material.dart' show Center, Widget, Color, CircularProgressIndicator, AlwaysStoppedAnimation;
+import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart' show CupertinoActivityIndicator;
 import 'package:crypto/crypto.dart';
 import 'package:event_bus/event_bus.dart';
@@ -52,6 +52,12 @@ class Constants {
         "clientinfo": jsonEncode(loginClientInfo),
     };
 
+    static Widget emptyDivider({double width = 8.0, double height = 8.0}) {
+        return SizedBox(
+            width: size(width),
+            height: size(height),
+        );
+    }
     /// Progress Indicator. Used in loading data.
     static Widget progressIndicator({
         double strokeWidth = 4.0,

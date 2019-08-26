@@ -46,17 +46,12 @@ class _MainPageState extends State<MainPage> {
         super.initState();
     }
 
-    Widget avatar() {
-        final double size = Constants.size(50.0);
-        return SizedBox(
-            width: size,
-            height: size,
-            child: ClipRRect(
-                borderRadius: BorderRadius.circular(size / 2),
-                child: Image(
-                    image: UserAPI.getAvatarProvider(),
-                ),
-            ),
+    Widget avatar(context) {
+        return GestureDetector(
+            child: UserAPI.getAvatarWidget(),
+            onTap: () {
+                Navigator.of(context).pushNamed("/user");
+            },
         );
     }
 
@@ -183,7 +178,7 @@ class _MainPageState extends State<MainPage> {
                             child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                    avatar(),
+                                    avatar(context),
                                     Expanded(child: SizedBox()),
                                     IconButton(
                                         icon: Icon(Icons.exit_to_app),
