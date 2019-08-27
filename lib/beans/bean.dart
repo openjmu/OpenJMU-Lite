@@ -154,11 +154,12 @@ class WebApp {
 /// [name] 课程名称, [time] 上课时间, [location] 上课地点, [className] 班级名称, [teacher] 教师名称,
 /// [day] 上课日, [startWeek] 开始周, [endWeek] 结束周,
 /// [classesName] 共同上课的班级,
-/// [isEleven] 是否第十一节
+/// [isEleven] 是否第十一节,
+/// [oddEven] 是否为单双周, 0为普通, 1为单周, 2为双周
 ///
 class Course {
     String name, time, location, className, teacher;
-    int day, startWeek, endWeek;
+    int day, startWeek, endWeek, oddEven;
     List<String> classesName;
     bool isEleven;
 
@@ -173,10 +174,25 @@ class Course {
         this.endWeek,
         this.classesName,
         this.isEleven,
+        this.oddEven,
     });
 
+    static int judgeOddEven(Map<String, dynamic> json) {
+        int _oddEven = 0;
+        List _split = json['allWeek'].split(' ');
+        if (_split.length > 1) {
+            if (_split[1] == "单周") {
+                _oddEven = 1;
+            } else if (_split[1] == "双周") {
+                _oddEven = 2;
+            }
+        }
+        return _oddEven;
+    }
+
     factory Course.fromJson(Map<String, dynamic> json) {
-        List weeks = json['allWeek'].split('-');
+        int _oddEven = judgeOddEven(json);
+        List weeks = json['allWeek'].split(' ')[0].split('-');
         return Course(
             name: json['couName'],
             time: json['coudeTime'],
@@ -188,6 +204,7 @@ class Course {
             endWeek: int.parse(weeks[1]),
             classesName: json['comboClassName'].split(','),
             isEleven: json['three'] != 'n',
+            oddEven: _oddEven,
         );
     }
 
@@ -204,6 +221,7 @@ class Course {
             'endWeek': endWeek,
             'classesName': classesName,
             'isEleven': isEleven,
+            'oddEven': oddEven,
         })}";
     }
 

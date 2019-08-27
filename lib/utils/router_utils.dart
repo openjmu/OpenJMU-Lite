@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 // Routes Pages
+import 'package:openjmu_lite/pages/about_page.dart';
 import 'package:openjmu_lite/pages/login_page.dart';
 import 'package:openjmu_lite/pages/main_page.dart';
-import 'package:openjmu_lite/pages/splash_page.dart';
 import 'package:openjmu_lite/pages/scan_qrcode_page.dart';
+import 'package:openjmu_lite/pages/splash_page.dart';
 import 'package:openjmu_lite/pages/user_page.dart';
 
 class RouterUtils {
@@ -17,6 +18,7 @@ class RouterUtils {
 
         "${pathDivider}user": (BuildContext context, {Map<String, dynamic> arguments}) => UserPage(),
         "${pathDivider}scanqrcode": (BuildContext context) => ScanQrCodePage(),
+        "${pathDivider}about": (BuildContext context) => AboutPage(),
     };
 }
 

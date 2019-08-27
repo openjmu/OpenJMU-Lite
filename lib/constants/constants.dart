@@ -52,6 +52,11 @@ class Constants {
         "clientinfo": jsonEncode(loginClientInfo),
     };
 
+    /// Common separator. Used in setting separate.
+    static DecoratedBox separator(context, {Color color, double height}) => DecoratedBox(
+        decoration: BoxDecoration(color: color ?? Theme.of(context).canvasColor),
+        child: SizedBox(height: size(height ?? 8.0)),
+    );
     static Widget emptyDivider({double width = 8.0, double height = 8.0}) {
         return SizedBox(
             width: size(width),

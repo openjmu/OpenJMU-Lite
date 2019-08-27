@@ -57,11 +57,16 @@ class _CourseSchedulePageState extends State<CourseSchedulePage> with TickerProv
         }
     }
 
-    Widget courseName(Course course) {
+    Widget courseName(Course course, CourseType type) {
         return Text(
             course.name,
             style: TextStyle(
-                color: CourseAPI.isActive(course) ? Colors.white : Colors.black,
+                color: CourseAPI.isActive(course)
+                        ? Colors.white
+                        : CourseAPI.isFinished(course) && type == CourseType.today
+                        ? Colors.grey[400]
+                        : Colors.black
+                ,
                 fontSize: Constants.size(20.0),
                 fontWeight: FontWeight.bold,
             ),
@@ -73,7 +78,12 @@ class _CourseSchedulePageState extends State<CourseSchedulePage> with TickerProv
         return Text(
             CourseAPI.getCourseTime(context, course, type),
             style: TextStyle(
-                color: CourseAPI.isActive(course) ? Colors.white : Colors.black,
+                color: CourseAPI.isActive(course)
+                        ? Colors.white
+                        : CourseAPI.isFinished(course) && type == CourseType.today
+                        ? Colors.grey[400]
+                        : Colors.black
+                ,
                 fontSize: Constants.size(15.0),
             ),
         );
@@ -83,7 +93,12 @@ class _CourseSchedulePageState extends State<CourseSchedulePage> with TickerProv
         return Text(
             CourseAPI.getCourseLocation(context, course, type),
             style: TextStyle(
-                color: CourseAPI.isActive(course) ? Colors.white : Colors.black,
+                color: CourseAPI.isActive(course)
+                        ? Colors.white
+                        : CourseAPI.isFinished(course) && type == CourseType.today
+                        ? Colors.grey[400]
+                        : Colors.black
+                ,
                 fontSize: Constants.size(15.0),
             ),
         );
@@ -109,7 +124,7 @@ class _CourseSchedulePageState extends State<CourseSchedulePage> with TickerProv
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                            courseName(course),
+                            courseName(course, type),
                             courseTime(course, type),
                             if (course.location != "") courseLocation(course, type),
                         ],
@@ -119,30 +134,57 @@ class _CourseSchedulePageState extends State<CourseSchedulePage> with TickerProv
         );
     }
 
-    Widget timelineIndicator(Course course) {
-        return Column(
+    Widget inProgressIndicator(Course course, CourseType type) {
+        return Row(
             children: <Widget>[
                 Container(
                     width: Constants.size(18.0),
                     height: Constants.size(18.0),
                     decoration: BoxDecoration(
                         border: !CourseAPI.isActive(course) ? Border.all(
-                            color: Constants.appThemeColor,
+                            color: CourseAPI.isFinished(course) && type == CourseType.today
+                                    ? Constants.appThemeColor.withAlpha(80)
+                                    : Constants.appThemeColor
+                            ,
                             width: Constants.size(3.0),
                         ) : null,
                         color: CourseAPI.isActive(course) ? Constants.appThemeColor : null,
                         shape: BoxShape.circle,
                     ),
                     child: CourseAPI.isActive(course) ? Center(
-                            child: Icon(
-                                Icons.check,
-                                color: Colors.white,
-                                size: Constants.size(16.0),
-                            ),
+                        child: Icon(
+                            Icons.check,
+                            color: Colors.white,
+                            size: Constants.size(18.0),
+                        ),
                     ) : null,
                 ),
-                SizedBox(height: Constants.size(8.0)),
-                Container(
+                Constants.emptyDivider(width: 16.0),
+                if (CourseAPI.isFinished(course) && type == CourseType.today) Text(
+                    "已下课",
+                    style: Theme.of(context).textTheme.body1.copyWith(
+                        color: Constants.appThemeColor.withAlpha(80),
+                        fontSize: Constants.size(18.0),
+                        fontWeight: FontWeight.bold,
+                    ),
+                ),
+                if (CourseAPI.isActive(course)) Text(
+                    "正在上课",
+                    style: Theme.of(context).textTheme.body1.copyWith(
+                        color: Constants.appThemeColor,
+                        fontSize: Constants.size(18.0),
+                        fontWeight: FontWeight.bold,
+                    ),
+                ),
+            ],
+        );
+    }
+
+    Widget timelineIndicator(Course course) {
+        return SizedBox(
+            width: Constants.size(18.0),
+            child: Center(
+                child: Container(
                     width: Constants.size(4.0),
                     height: Constants.size(100.0),
                     decoration: BoxDecoration(
@@ -153,7 +195,7 @@ class _CourseSchedulePageState extends State<CourseSchedulePage> with TickerProv
                         ,
                     ),
                 ),
-            ],
+            ),
         );
     }
 
@@ -225,12 +267,20 @@ class _CourseSchedulePageState extends State<CourseSchedulePage> with TickerProv
                     padding: EdgeInsets.symmetric(
                         horizontal: Constants.size(24.0),
                     ),
-                    child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                    child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                            timelineIndicator(course),
-                            SizedBox(width: Constants.size(16.0)),
-                            courseWidget(course, type),
+                            inProgressIndicator(course, type),
+                            Constants.emptyDivider(height: 8.0),
+                            Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: <Widget>[
+                                    timelineIndicator(course),
+                                    Constants.emptyDivider(width: 16.0),
+                                    courseWidget(course, type),
+                                ],
+                            ),
                         ],
                     ),
                 );

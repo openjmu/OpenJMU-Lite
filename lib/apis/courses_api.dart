@@ -41,7 +41,25 @@ class CourseAPI {
         return course.day == now.weekday;
     }
     static bool inCurrentWeek(Course course) {
-        return DateAPI.currentWeek >= course.startWeek && DateAPI.currentWeek <= course.endWeek;
+        bool result;
+        bool inRange = DateAPI.currentWeek >= course.startWeek && DateAPI.currentWeek <= course.endWeek;
+        bool isOddEven = course.oddEven != 0;
+        if (isOddEven) {
+            if (course.oddEven == 1) {
+                result = inRange && DateAPI.currentWeek.isOdd;
+            } else if (course.oddEven == 2) {
+                result = inRange && DateAPI.currentWeek.isEven;
+            }
+        } else {
+            result = inRange;
+        }
+        return result;
+    }
+    static bool isFinished(Course course) {
+        double timeNow = _timeToDouble(TimeOfDay.now());
+        List<TimeOfDay> times = courseTime[course.time];
+        double end = _timeToDouble(times[1]);
+        return end < timeNow;
     }
     static bool isActive(Course course) {
         return inCurrentTime(course) && inCurrentDay(course) && inCurrentWeek(course);
@@ -83,7 +101,8 @@ class CourseAPI {
                         "　"
                         "周${courseDayTime[course.day]}"
                         "　"
-                        "${course.startWeek}-${course.endWeek}周"
+                        "${course.startWeek}-${course.endWeek}"
+                        "${course.oddEven != 0 ? course.oddEven == 1 ? "单" : "双" : ""}周"
                 ;
                 break;
         }

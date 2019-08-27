@@ -11,7 +11,6 @@ import 'package:openjmu_lite/apis/user_api.dart';
 import 'package:openjmu_lite/beans/event.dart';
 import 'package:openjmu_lite/constants/constants.dart';
 import 'package:openjmu_lite/pages/course_schedule_page.dart';
-import 'package:openjmu_lite/utils/data_utils.dart';
 
 
 class MainPage extends StatefulWidget {
@@ -21,7 +20,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
     Color themeColor = Constants.appThemeColor;
-    int _index = 0;
+//    int _index = 0;
 
     int currentWeek;
     DateTime now;
@@ -120,7 +119,7 @@ class _MainPageState extends State<MainPage> {
 
     void getCurrentWeek() async {
         String _day = jsonDecode((await DateAPI.getCurrentWeek()).data)['start'];
-//        String _day = "2019-08-12";
+//        String _day = "2019-07-22";
         DateAPI.startDate = DateTime.parse(_day);
         DateTime currentDate = DateTime.now();
         DateAPI.difference = DateAPI.startDate.difference(currentDate).inDays - 1;
@@ -156,11 +155,11 @@ class _MainPageState extends State<MainPage> {
         });
     }
 
-    void selectItem(index) {
-        setState(() {
-            _index = index;
-        });
-    }
+//    void selectItem(index) {
+//        setState(() {
+//            _index = index;
+//        });
+//    }
 
     @override
     Widget build(BuildContext context) {
@@ -180,12 +179,6 @@ class _MainPageState extends State<MainPage> {
                                 children: <Widget>[
                                     avatar(context),
                                     Expanded(child: SizedBox()),
-                                    IconButton(
-                                        icon: Icon(Icons.exit_to_app),
-                                        onPressed: () async {
-                                            DataUtils.logout(context);
-                                        },
-                                    ),
                                     scan(context),
                                 ],
                             ),
