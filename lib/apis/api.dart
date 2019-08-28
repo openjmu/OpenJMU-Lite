@@ -1,5 +1,7 @@
 import 'dart:core';
 
+import 'package:openjmu_lite/utils/socket_utils.dart';
+
 
 class API {
     static final String homePage = "https://openjmu.xyz";
@@ -29,55 +31,14 @@ class API {
     /// 用户相关
     static final String userInfo = "$oap99Host/user/info";
     static String studentInfo({int uid = 0}) => "$oa99Host/v2/api/class/studentinfo?uid=$uid";
-    static String userLevel({int uid = 0}) => "$oa99Host/ajax/score/info?uid=$uid";
-//    static final String userAvatar = "$oap99Host/face";
-    static final String userAvatarInSecure = "$oap99Host/face";
-    static final String userAvatarUpload = "$oap99Host/face/upload";
-    static final String userPhotoWallUpload = "$oap99Host/photowall/upload";
-    static final String userTags = "$oa99Host/v2/api/usertag/getusertags";
-    static final String userFans = "$wbHost/relation_api/fans/uid/";
-    static final String userIdols = "$wbHost/relation_api/idols/uid/";
-    static final String userFansAndIdols = "$wbHost/user_api/tally/uid/";
-    static final String userRequestFollow = "$wbHost/relation_api/idol/idol_uid/";
-    static final String userFollowAdd = "$oap99Host/friend/followadd/";
-    static final String userFollowDel = "$oap99Host/friend/followdel/";
-    static final String userSignature = "$oa99Host/v2/api/user/signature_edit";
-    static final String searchUser = "$oa99Host/v2/api/search/users";
-    /// Blacklist
-    static String blacklist({int pos, int size}) {
-        return "$oa99Host/v2/friend/api/blacklist/list?pos=${pos ?? 0}&size=${size ?? 20}";
-    }
-    static final String addToBlacklist = "$oa99Host/v2/friend/api/blacklist/new";
-    static final String removeFromBlacklist = "$oa99Host/v2/friend/api/blacklist/remove";
+    static final String userAvatar = "$oap99Host/face";
 
     /// 应用中心
     static final String webAppLists = "$oap99Host/app/unitmenu?cfg=1";
     static final String webAppIcons = "$oap99Host/app/menuicon?size=f128&unitid=55&";
 
-    /// 微博相关
-    static final String postUnread = "$wbHost/user_api/unread";
-    static final String postList = "$wbHost/topic_api/square";
-    static final String postListByUid = "$wbHost/topic_api/user/uid/";
-    static final String postListByWords = "$wbHost/search_api/topic/keyword/";
-    static final String postFollowedList = "$wbHost/topic_api/timeline";
-    static final String postGlance = "$wbHost/topic_api/glances";
-    static final String postContent = "$wbHost/topic_api/topic";
-    static final String postUploadImage = "$wbHost/upload_api/image";
-    static final String postRequestForward = "$wbHost/topic_api/repost";
-    static final String postRequestComment = "$wbHost/reply_api/reply/tid/";
-    static final String postRequestCommentTo = "$wbHost/reply_api/comment/tid/";
-    static final String postRequestPraise = "$wbHost/praise_api/praise/tid/";
-    static final String postForwardsList = "$wbHost/topic_api/repolist/tid/";
-    static final String postCommentsList = "$wbHost/reply_api/replylist/tid/";
-    static final String postPraisesList = "$wbHost/praise_api/praisors/tid/";
-
-    static String commentImageUrl(int id, String type) => "$wbHost/upload_api/image/unit_id/55/id/$id/type/$type?env=jmu";
-
-    /// 通知相关
-    static final String postListByMention = "$wbHost/topic_api/mentionme";
-    static final String commentListByReply = "$wbHost/reply_api/replyme";
-    static final String commentListByMention = "$wbHost/reply_api/mentionme";
-    static final String praiseList = "$wbHost/praise_api/tome";
+    /// 成绩相关
+    static final SocketConfig scoreSocket = SocketConfig("$openjmuHost", 4000);
 
     /// 签到相关
     static final String sign = "$oa99Host/ajax/sign/usersign";

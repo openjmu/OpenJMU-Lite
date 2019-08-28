@@ -41,7 +41,6 @@ class DataUtils {
             try {
                 setUserInfo(userInfo);
                 await SpUtils.saveLoginInfo(userInfo);
-                UserAPI.setBlacklist((await UserAPI.getBlacklist()).data["users"]);
                 Constants.eventBus.fire(LoginEvent(context, isWizard));
                 showShortToast("登录成功！");
             } catch (e) {
@@ -98,7 +97,6 @@ class DataUtils {
             await getUserInfo();
             bool isWizard = true;
             if (!UserAPI.currentUser.isTeacher) isWizard = await checkWizard();
-            UserAPI.setBlacklist((await UserAPI.getBlacklist()).data["users"]);
             Constants.eventBus.fire(TicketGotEvent(isWizard));
         } catch (e) {
             if (e.response != null) {

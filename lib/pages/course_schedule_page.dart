@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -17,23 +18,30 @@ class CourseSchedulePage extends StatefulWidget {
 }
 
 class _CourseSchedulePageState extends State<CourseSchedulePage> with TickerProviderStateMixin{
-    bool loading = true;
+    bool loading = true, loaded = false;
     List<Course> courses;
     List<Course> coursesToday;
     List<Course> coursesWeek;
     TabController _tabController;
+    Timer _courseRefreshTimer;
 
     @override
     void initState() {
         _tabController = TabController(length: CourseType.values.length, vsync: this);
         getCourses();
+        _courseRefreshTimer = Timer.periodic(Duration(minutes: 1), (timer) {
+            getCourses();
+        });
         super.initState();
     }
 
-    void getCourses({CourseType type = CourseType.today}) async {
-        if (!loading) setState(() {
-            loading = true;
-        });
+    @override
+    void dispose() {
+        _courseRefreshTimer?.cancel();
+        super.dispose();
+    }
+
+    void getCourses() async {
         try {
             Map<String, dynamic> data = jsonDecode((await NetUtils.get(
                 API.courseScheduleCourses,
@@ -252,7 +260,7 @@ class _CourseSchedulePageState extends State<CourseSchedulePage> with TickerProv
                 emptyTips = "本学期没有课程\n对自己的规划是成长的阶梯🏃";
                 break;
         }
-        return !loading
+        return !loading && !loaded
                 ?
         showCourse ? ListView.builder(
             physics: const BouncingScrollPhysics(),

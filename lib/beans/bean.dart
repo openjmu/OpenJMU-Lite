@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/widgets.dart';
+
 
 ///
 /// 用户页用户实体
@@ -92,64 +94,6 @@ class UserInfo {
 }
 
 ///
-/// 用户个性标签
-/// [id] 标签id, [name] 名称
-///
-class UserTag {
-    int id;
-    String name;
-
-    UserTag({this.id, this.name});
-
-    @override
-    bool operator ==(Object other) => identical(this, other) || other is UserTag && runtimeType == other.runtimeType && id == other.id;
-
-    @override
-    int get hashCode => id.hashCode;
-}
-
-///
-/// 应用中心应用
-/// [id] 应用id, [sequence] 排序下标, [code] 代码, [name] 名称, [url] 地址, [menuType] 分类
-///
-class WebApp {
-    int id;
-    int sequence;
-    String code;
-    String name;
-    String url;
-    String menuType;
-
-    WebApp({this.id, this.sequence, this.code, this.name, this.url, this.menuType});
-
-    @override
-    bool operator ==(Object other) => identical(this, other) || other is WebApp && runtimeType == other.runtimeType && id == other.id;
-
-    @override
-    int get hashCode => id.hashCode;
-
-    static Map category() => {
-//        "10": "个人事务",
-        "A4": "我的服务",
-        "A3": "我的系统",
-        "A8": "流程服务",
-        "A2": "我的媒体",
-        "A1": "我的网站",
-        "A5": "其他",
-        "20": "行政办公",
-        "30": "客户关系",
-        "40": "知识管理",
-        "50": "交流中心",
-        "60": "人力资源",
-        "70": "项目管理",
-        "80": "档案管理",
-        "90": "教育在线",
-        "A0": "办公工具",
-        "Z0": "系统设置",
-    };
-}
-
-///
 /// 课程
 /// [name] 课程名称, [time] 上课时间, [location] 上课地点, [className] 班级名称, [teacher] 教师名称,
 /// [day] 上课日, [startWeek] 开始周, [endWeek] 结束周,
@@ -225,4 +169,86 @@ class Course {
         })}";
     }
 
+}
+
+///
+/// 成绩类
+/// [code] 课程代码, [courseName] 课程名称, [score] 成绩, [termId] 学年学期, [credit] 学分, [creditHour] 学时
+///
+class Score {
+    String code, courseName, score, termId;
+    double credit, creditHour;
+
+    Score({this.code, this.courseName, this.score, this.termId, this.credit, this.creditHour});
+
+    factory Score.fromJson(Map<String, dynamic> json) {
+        return Score(
+            code: json['code'],
+            courseName: json['courseName'],
+            score: json['score'],
+            termId: json['termId'],
+            credit: double.parse(json['credit']),
+            creditHour: double.parse(json['creditHour']),
+        );
+    }
+
+    @override
+    String toString() {
+        return "Score ${JsonEncoder.withIndent("  ").convert({
+            'code': code,
+            'courseName': courseName,
+            'termId': termId,
+            'score': score,
+            'credit': credit,
+            'creditHour': creditHour,
+        })}";
+    }
+}
+
+///
+/// 应用中心应用
+/// [id] 应用id, [sequence] 排序下标, [code] 代码, [name] 名称, [url] 地址, [menuType] 分类
+///
+class WebApp {
+    int id;
+    int sequence;
+    String code;
+    String name;
+    String url;
+    String menuType;
+
+    WebApp({this.id, this.sequence, this.code, this.name, this.url, this.menuType});
+
+    @override
+    bool operator ==(Object other) => identical(this, other) || other is WebApp && runtimeType == other.runtimeType && id == other.id;
+
+    @override
+    int get hashCode => id.hashCode;
+
+    static Map category() => {
+//        "10": "个人事务",
+        "A4": "我的服务",
+        "A3": "我的系统",
+        "A8": "流程服务",
+        "A2": "我的媒体",
+        "A1": "我的网站",
+        "A5": "其他",
+        "20": "行政办公",
+        "30": "客户关系",
+        "40": "知识管理",
+        "50": "交流中心",
+        "60": "人力资源",
+        "70": "项目管理",
+        "80": "档案管理",
+        "90": "教育在线",
+        "A0": "办公工具",
+        "Z0": "系统设置",
+    };
+}
+
+class NoGlowScrollBehavior extends ScrollBehavior {
+    @override
+    Widget buildViewportChrome(BuildContext context, Widget child, AxisDirection axisDirection) {
+        return child;
+    }
 }

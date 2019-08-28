@@ -34,6 +34,7 @@ class CourseAPI {
         List<TimeOfDay> times = courseTime[course.time];
         double start = _timeToDouble(times[0]);
         double end = _timeToDouble(times[1]);
+        if (course.isEleven) end = _timeToDouble(courseTime["11"][1]);
         return start <= timeNow && end >= timeNow;
     }
     static bool inCurrentDay(Course course) {
@@ -70,7 +71,7 @@ class CourseAPI {
         "34": [_time(10, 05), _time(11, 40)],
         "56": [_time(14, 00), _time(15, 35)],
         "78": [_time(15, 55), _time(17, 30)],
-        "910": [_time(19, 00), _time(20, 45)],
+        "90": [_time(19, 00), _time(20, 45)],
         "11": [_time(20, 50), _time(21, 25)],
     };
     static Map<String, String> courseTimeChinese = {
@@ -78,7 +79,7 @@ class CourseAPI {
         "34": "三四节",
         "56": "五六节",
         "78": "七八节",
-        "910": "九十节",
+        "90": "九十节",
         "11": "十一节",
     };
     static Map<int, String> courseDayTime = {
@@ -88,10 +89,13 @@ class CourseAPI {
     static String getCourseTime(BuildContext context, Course course, CourseType type) {
         List<TimeOfDay> times = courseTime[course.time];
         TimeOfDay start = times[0], end = times[1];
+        if (course.isEleven) end = courseTime["11"][1];
         String result;
         switch (type) {
             case CourseType.today:
-                result = "${start.format(context)} - ${end.format(context)}　${courseTimeChinese[course.time]}";
+                String _time = courseTimeChinese[course.time];
+                if (course.isEleven) _time = "${_time.substring(0, 1)}至${courseTimeChinese["11"]}";
+                result = "${start.format(context)} - ${end.format(context)}　$_time";
                 break;
             case CourseType.week:
                 result = "${start.format(context)} - ${end.format(context)}　星期${courseDayTime[course.day]}";

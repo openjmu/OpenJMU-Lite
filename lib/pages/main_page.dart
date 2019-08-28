@@ -11,6 +11,7 @@ import 'package:openjmu_lite/apis/user_api.dart';
 import 'package:openjmu_lite/beans/event.dart';
 import 'package:openjmu_lite/constants/constants.dart';
 import 'package:openjmu_lite/pages/course_schedule_page.dart';
+import 'package:openjmu_lite/pages/score_page.dart';
 
 
 class MainPage extends StatefulWidget {
@@ -20,7 +21,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
     Color themeColor = Constants.appThemeColor;
-//    int _index = 0;
+    int _index = 0;
 
     int currentWeek;
     DateTime now;
@@ -155,11 +156,11 @@ class _MainPageState extends State<MainPage> {
         });
     }
 
-//    void selectItem(index) {
-//        setState(() {
-//            _index = index;
-//        });
-//    }
+    void selectItem(index) {
+        setState(() {
+            _index = index;
+        });
+    }
 
     @override
     Widget build(BuildContext context) {
@@ -196,7 +197,7 @@ class _MainPageState extends State<MainPage> {
                             ),
                         ),
                         Expanded(
-                            child: DecoratedBox(
+                            child: Container(
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(Constants.size(30.0)),
@@ -204,29 +205,41 @@ class _MainPageState extends State<MainPage> {
                                     ),
                                     color: Colors.white,
                                 ),
-                                child: CourseSchedulePage(),
+                                child: ClipRRect(
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(Constants.size(30.0)),
+                                        topRight: Radius.circular(Constants.size(30.0)),
+                                    ),
+                                    child: IndexedStack(
+                                        index: _index,
+                                        children: <Widget>[
+                                            CourseSchedulePage(),
+                                            ScorePage(),
+                                        ],
+                                    ),
+                                ),
                             ),
                         ),
                     ],
                 ),
             ),
-//            bottomNavigationBar: BottomNavigationBar(
-//                type: BottomNavigationBarType.shifting,
-//                currentIndex: _index,
-//                selectedItemColor: themeColor,
-//                unselectedItemColor: Colors.grey,
-//                onTap: selectItem,
-//                items: <BottomNavigationBarItem>[
-//                    BottomNavigationBarItem(
-//                            icon: Icon(Icons.calendar_today),
-//                            title: Text("首页")
-//                    ),
-//                    BottomNavigationBarItem(
-//                            icon: Icon(Icons.person),
-//                            title: Text("我的")
-//                    ),
-//                ],
-//            ),
+            bottomNavigationBar: BottomNavigationBar(
+                type: BottomNavigationBarType.shifting,
+                currentIndex: _index,
+                selectedItemColor: themeColor,
+                unselectedItemColor: Colors.grey,
+                onTap: selectItem,
+                items: <BottomNavigationBarItem>[
+                    BottomNavigationBarItem(
+                        icon: Icon(Icons.date_range),
+                        title: Text("课程"),
+                    ),
+                    BottomNavigationBarItem(
+                        icon: Icon(Icons.receipt),
+                        title: Text("成绩"),
+                    ),
+                ],
+            ),
         );
     }
 }
