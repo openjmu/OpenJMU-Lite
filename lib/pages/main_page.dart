@@ -10,6 +10,7 @@ import 'package:openjmu_lite/apis/date_api.dart';
 import 'package:openjmu_lite/apis/user_api.dart';
 import 'package:openjmu_lite/beans/event.dart';
 import 'package:openjmu_lite/constants/constants.dart';
+import 'package:openjmu_lite/pages/app_center_page.dart';
 import 'package:openjmu_lite/pages/course_schedule_page.dart';
 import 'package:openjmu_lite/pages/score_page.dart';
 
@@ -20,6 +21,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+    final PageController _controller = PageController();
     Color themeColor = Constants.appThemeColor;
     int _index = 0;
 
@@ -30,6 +32,7 @@ class _MainPageState extends State<MainPage> {
 
     @override
     void initState() {
+        debugPrint(UserAPI.currentUser.toString());
         updateHello();
         getCurrentWeek();
         if (mounted && updateHelloTimer != null) {
@@ -160,6 +163,11 @@ class _MainPageState extends State<MainPage> {
         setState(() {
             _index = index;
         });
+        _controller.animateToPage(
+            index,
+            curve: Curves.fastOutSlowIn,
+            duration: Duration(milliseconds: 200),
+        );
     }
 
     @override
@@ -210,11 +218,13 @@ class _MainPageState extends State<MainPage> {
                                         topLeft: Radius.circular(Constants.size(30.0)),
                                         topRight: Radius.circular(Constants.size(30.0)),
                                     ),
-                                    child: IndexedStack(
-                                        index: _index,
+                                    child: PageView(
+                                        controller: _controller,
+                                        physics: const NeverScrollableScrollPhysics(),
                                         children: <Widget>[
                                             CourseSchedulePage(),
                                             ScorePage(),
+                                            AppCenterPage(),
                                         ],
                                     ),
                                 ),
@@ -224,7 +234,7 @@ class _MainPageState extends State<MainPage> {
                 ),
             ),
             bottomNavigationBar: BottomNavigationBar(
-                type: BottomNavigationBarType.shifting,
+                type: BottomNavigationBarType.fixed,
                 currentIndex: _index,
                 selectedItemColor: themeColor,
                 unselectedItemColor: Colors.grey,
@@ -237,6 +247,10 @@ class _MainPageState extends State<MainPage> {
                     BottomNavigationBarItem(
                         icon: Icon(Icons.receipt),
                         title: Text("成绩"),
+                    ),
+                    BottomNavigationBarItem(
+                        icon: Icon(Icons.widgets),
+                        title: Text("应用"),
                     ),
                 ],
             ),

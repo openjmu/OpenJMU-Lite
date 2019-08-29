@@ -10,6 +10,7 @@ import 'package:openjmu_lite/apis/user_api.dart';
 import 'package:openjmu_lite/beans/bean.dart';
 import 'package:openjmu_lite/constants/constants.dart';
 import 'package:openjmu_lite/utils/net_utils.dart';
+import 'package:openjmu_lite/utils/notification_utils.dart';
 
 
 class CourseSchedulePage extends StatefulWidget {
@@ -17,18 +18,23 @@ class CourseSchedulePage extends StatefulWidget {
     _CourseSchedulePageState createState() => _CourseSchedulePageState();
 }
 
-class _CourseSchedulePageState extends State<CourseSchedulePage> with TickerProviderStateMixin{
+class _CourseSchedulePageState extends State<CourseSchedulePage>
+        with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
     bool loading = true, loaded = false;
     List<Course> courses;
     List<Course> coursesToday;
     List<Course> coursesWeek;
+    Set<String> coursePushed = <String>{};
     TabController _tabController;
     Timer _courseRefreshTimer;
 
     @override
+    bool get wantKeepAlive => true;
+
+    @override
     void initState() {
         _tabController = TabController(length: CourseType.values.length, vsync: this);
-        getCourses();
+        getCourses(first: true);
         _courseRefreshTimer = Timer.periodic(Duration(minutes: 1), (timer) {
             getCourses();
         });
@@ -41,7 +47,7 @@ class _CourseSchedulePageState extends State<CourseSchedulePage> with TickerProv
         super.dispose();
     }
 
-    void getCourses() async {
+    void getCourses({bool first = false}) async {
         try {
             Map<String, dynamic> data = jsonDecode((await NetUtils.get(
                 API.courseScheduleCourses,
@@ -58,10 +64,47 @@ class _CourseSchedulePageState extends State<CourseSchedulePage> with TickerProv
             courses = _list;
             coursesToday = _listToday;
             coursesWeek = _listWeek;
+            getCoursesPushed(first: first);
             loading = false;
             if (mounted) setState(() {});
         } catch (e) {
             debugPrint("$e");
+        }
+    }
+
+    void getCoursesPushed({bool first = false}) async {
+        Course _pushCourse;
+        for (int i = 0; i < coursesToday.length; i++) {
+            Course _c = coursesToday[i];
+            if (!CourseAPI.isFinished(_c) && !CourseAPI.isActive(_c)) {
+                if (!coursePushed.contains(_c.uniqueId)) {
+                    _pushCourse = _c;
+                    break;
+                }
+            }
+        }
+        if (_pushCourse != null) {
+            if (CourseAPI.notifyFirst(_pushCourse)) {
+                List<TimeOfDay> times = CourseAPI.courseTime[_pushCourse.time];
+                TimeOfDay start = times[0], end = times[1];
+                if (_pushCourse.isEleven) end = CourseAPI.courseTime["11"][1];
+                await NotificationUtils.showNotification(
+                    "上课提醒",
+                    "${_pushCourse.name}　${start.format(context)} - ${end.format(context)}　${_pushCourse.location}"
+                            "\n"
+                            "千万不要迟到了噢~"
+                    ,
+                );
+            } else if (CourseAPI.notifySecond(_pushCourse)) {
+                coursePushed.add(_pushCourse.uniqueId);
+                await NotificationUtils.showNotification(
+                    "上课提醒",
+                    "${_pushCourse.name}还有5分钟就开始上课了~"
+                            "\n"
+                    "地点在${_pushCourse.location}，要加快脚步噢~"
+                    ,
+                );
+            }
         }
     }
 
@@ -168,6 +211,14 @@ class _CourseSchedulePageState extends State<CourseSchedulePage> with TickerProv
                     ) : null,
                 ),
                 Constants.emptyDivider(width: 16.0),
+                if (CourseAPI.inReadyTime(course) && type == CourseType.today) Text(
+                    "准备上课",
+                    style: Theme.of(context).textTheme.body1.copyWith(
+                        color: Constants.appThemeColor,
+                        fontSize: Constants.size(18.0),
+                        fontWeight: FontWeight.bold,
+                    ),
+                ),
                 if (CourseAPI.isFinished(course) && type == CourseType.today) Text(
                     "已下课",
                     style: Theme.of(context).textTheme.body1.copyWith(
@@ -315,8 +366,9 @@ class _CourseSchedulePageState extends State<CourseSchedulePage> with TickerProv
         );
     }
 
-    @override
+    @mustCallSuper
     Widget build(BuildContext context) {
+        super.build(context);
         return Column(
             children: <Widget>[
                 courseTabs(context),

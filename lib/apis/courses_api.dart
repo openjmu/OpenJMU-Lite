@@ -29,11 +29,17 @@ class CourseAPI {
     static TimeOfDay _time(int hour, int minute) => TimeOfDay(hour: hour, minute: minute);
     static double _timeToDouble(TimeOfDay time) => time.hour + time.minute / 60.0;
 
-    static bool inCurrentTime(Course course) {
+    static bool inReadyTime(Course course) {
         double timeNow = _timeToDouble(TimeOfDay.now());
         List<TimeOfDay> times = courseTime[course.time];
         double start = _timeToDouble(times[0]);
-        double end = _timeToDouble(times[1]);
+        return start - timeNow <= 0.5 && start - timeNow > 0;
+    }
+    static bool inCurrentTime(Course course) {
+        double timeNow = _timeToDouble(TimeOfDay.now()) - (1 / 60);
+        List<TimeOfDay> times = courseTime[course.time];
+        double start = _timeToDouble(times[0]);
+        double end = _timeToDouble(times[1]) - (1 / 60);
         if (course.isEleven) end = _timeToDouble(courseTime["11"][1]);
         return start <= timeNow && end >= timeNow;
     }
@@ -64,6 +70,16 @@ class CourseAPI {
     }
     static bool isActive(Course course) {
         return inCurrentTime(course) && inCurrentDay(course) && inCurrentWeek(course);
+    }
+    static bool notifyFirst(Course course) {
+        double timeToNotify = _timeToDouble(TimeOfDay.fromDateTime(DateTime.now().add(Duration(minutes: 30))));
+        double start = _timeToDouble(courseTime[course.time][0]);
+        return timeToNotify == start;
+    }
+    static bool notifySecond(Course course) {
+        double timeToNotify = _timeToDouble(TimeOfDay.fromDateTime(DateTime.now().add(Duration(minutes: 5))));
+        double start = _timeToDouble(courseTime[course.time][0]);
+        return timeToNotify == start;
     }
 
     static Map<String, List<TimeOfDay>> courseTime = {

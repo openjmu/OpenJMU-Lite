@@ -16,7 +16,7 @@ class ScorePage extends StatefulWidget {
     State<StatefulWidget> createState() => _ScorePageState();
 }
 
-class _ScorePageState extends State<ScorePage> {
+class _ScorePageState extends State<ScorePage> with AutomaticKeepAliveClientMixin {
     final Map<String, Map<String, double>> fiveBandScale = {
         "优秀": {
             "score": 95.0,
@@ -56,6 +56,9 @@ class _ScorePageState extends State<ScorePage> {
     String _scoreData = "";
     Widget errorWidget = SizedBox();
     StreamSubscription scoresSubscription;
+
+    @override
+    bool get wantKeepAlive => true;
 
     @override
     void initState() {
@@ -136,9 +139,8 @@ class _ScorePageState extends State<ScorePage> {
                         return score.termId != (termSelected != null ? termSelected : terms.last);
                     });
                 }
-                setState(() {
-                    loading = false;
-                });
+                loading = false;
+                if (mounted) setState(() {});
             } catch (e) {
                 debugPrint("$e");
             }
@@ -340,8 +342,9 @@ class _ScorePageState extends State<ScorePage> {
         );
     }
 
-    @override
+    @mustCallSuper
     Widget build(BuildContext context) {
+        super.build(context);
         return loading ?
         Center(child: Constants.progressIndicator())
                 : loadError

@@ -19,6 +19,8 @@ class RouterUtils {
         "${pathDivider}user": (BuildContext context, {Map<String, dynamic> arguments}) => UserPage(),
         "${pathDivider}scanqrcode": (BuildContext context) => ScanQrCodePage(),
         "${pathDivider}about": (BuildContext context) => AboutPage(),
+
+//        "${pathDivider}test": (BuildContext context) => (),
     };
 }
 

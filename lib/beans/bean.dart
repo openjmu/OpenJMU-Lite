@@ -121,6 +121,8 @@ class Course {
         this.oddEven,
     });
 
+    String get uniqueId => "$name\$$time\$$day\$$startWeek\$$endWeek";
+
     static int judgeOddEven(Map<String, dynamic> json) {
         int _oddEven = 0;
         List _split = json['allWeek'].split(' ');
@@ -226,7 +228,7 @@ class WebApp {
     int get hashCode => id.hashCode;
 
     static Map category() => {
-//        "10": "个人事务",
+        "10": "个人事务",
         "A4": "我的服务",
         "A3": "我的系统",
         "A8": "流程服务",

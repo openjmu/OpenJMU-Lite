@@ -28,12 +28,18 @@ class _UserPageState extends State<UserPage> {
             "关于OpenJMU Lite",
             "退出登录",
         ],
+//          [
+//              "测试"
+//          ],
     ];
     final List<List<String>> settingsIcon = [
         [
             "idols",
             "exit",
         ],
+//          [
+//              "idols",
+//          ],
     ];
 
     bool showTitle = false;
@@ -249,6 +255,9 @@ class _UserPageState extends State<UserPage> {
                 break;
             case "退出登录":
                 DataUtils.logout(context);
+                break;
+            case "测试":
+                Navigator.pushNamed(context, "/notification");
                 break;
             default:
                 break;
