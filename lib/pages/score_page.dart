@@ -250,7 +250,7 @@ class _ScorePageState extends State<ScorePage> with AutomaticKeepAliveClientMixi
                                                 ? FontWeight.bold
                                                 : FontWeight.normal
                                         ,
-                                        fontSize: Constants.size(16.0),
+                                        fontSize: Constants.size(14.0),
                                     ),
                                 ),
                                 Text(
@@ -264,7 +264,7 @@ class _ScorePageState extends State<ScorePage> with AutomaticKeepAliveClientMixi
                                                 ? FontWeight.bold
                                                 : FontWeight.normal
                                         ,
-                                        fontSize: Constants.size(18.0),
+                                        fontSize: Constants.size(16.0),
                                     ),
                                 ),
                             ],
@@ -279,7 +279,7 @@ class _ScorePageState extends State<ScorePage> with AutomaticKeepAliveClientMixi
         return Text(
             "${score.courseName}",
             style: Theme.of(context).textTheme.title.copyWith(
-                fontSize: Constants.size(24.0),
+                fontSize: Constants.size(22.0),
             ),
             overflow: TextOverflow.ellipsis,
         );
@@ -309,7 +309,7 @@ class _ScorePageState extends State<ScorePage> with AutomaticKeepAliveClientMixi
                     TextSpan(
                         text: "$_score",
                         style: Theme.of(context).textTheme.title.copyWith(
-                            fontSize: Constants.size(36.0),
+                            fontSize: Constants.size(32.0),
                             fontWeight: FontWeight.bold,
                             color: !pass ? Colors.red : Theme.of(context).textTheme.title.color
                             ,
@@ -324,7 +324,7 @@ class _ScorePageState extends State<ScorePage> with AutomaticKeepAliveClientMixi
                     TextSpan(
                         text: "$_scorePoint",
                         style: Theme.of(context).textTheme.subtitle.copyWith(
-                            fontSize: Constants.size(20.0),
+                            fontSize: Constants.size(18.0),
                         ),
                     ),
                 ],
@@ -337,7 +337,7 @@ class _ScorePageState extends State<ScorePage> with AutomaticKeepAliveClientMixi
             "学时: ${score.creditHour}　"
                     "学分: ${score.credit.toStringAsFixed(1)}",
             style: Theme.of(context).textTheme.body1.copyWith(
-                fontSize: Constants.size(20.0),
+                fontSize: Constants.size(18.0),
             ),
         );
     }
