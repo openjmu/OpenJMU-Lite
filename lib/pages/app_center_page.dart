@@ -134,7 +134,7 @@ class AppCenterPageState extends State<AppCenterPage>
                     Text(
                         webApp.name,
                         style: TextStyle(
-                            fontSize: Constants.size(17.0),
+                            fontSize: Constants.size(16.0),
                             color: Theme.of(context).textTheme.body1.color,
                             fontWeight: FontWeight.normal,
                         ),
