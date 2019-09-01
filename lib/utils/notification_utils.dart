@@ -10,7 +10,7 @@ import 'package:openjmu_lite/constants/constants.dart';
 class NotificationUtils{
     static FlutterLocalNotificationsPlugin plugin = FlutterLocalNotificationsPlugin();
 
-    static initSettings() {
+    static void initSettings() {
         AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('ic_launcher_trans');
         IOSInitializationSettings initializationSettingsIOS = IOSInitializationSettings(
             onDidReceiveLocalNotification: onDidReceiveLocalNotification,
@@ -22,7 +22,7 @@ class NotificationUtils{
         NotificationUtils.plugin.initialize(initializationSettings, onSelectNotification: onSelectNotification);
     }
 
-    static Future<void> showNotification(String title, String body) async {
+    static Future showNotification(String title, String body) async {
         final AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
             'openjmu_channel',
             'openjmu_course',
@@ -31,6 +31,7 @@ class NotificationUtils{
             priority: Priority.High,
             color: Constants.appThemeColor,
             style: AndroidNotificationStyle.BigText,
+            ticker: 'ticker',
         );
         IOSNotificationDetails iOSPlatformChannelSpecifics = IOSNotificationDetails();
         NotificationDetails platformChannelSpecifics = NotificationDetails(
@@ -40,13 +41,13 @@ class NotificationUtils{
         await NotificationUtils.plugin.show(0, title, body, platformChannelSpecifics);
     }
 
-    static Future<void> cancelAllNotifications() async {
+    static Future cancelAllNotifications() async {
         await NotificationUtils.plugin.cancelAll();
     }
 
-    static Future<void> onDidReceiveLocalNotification(int id, String title, String body, String payload) async {}
+    static Future onDidReceiveLocalNotification(int id, String title, String body, String payload) async {}
 
-    static Future<void> onSelectNotification(String payload) async {
+    static Future onSelectNotification(String payload) async {
         if (payload != null) {
             debugPrint('notification payload: ' + payload);
         }

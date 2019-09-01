@@ -34,8 +34,8 @@ class _CourseSchedulePageState extends State<CourseSchedulePage>
     @override
     void initState() {
         _tabController = TabController(length: CourseType.values.length, vsync: this);
-        getCourses(first: true);
-        _courseRefreshTimer = Timer.periodic(Duration(minutes: 1), (timer) {
+        getCourses();
+        _courseRefreshTimer = Timer.periodic(Duration(minutes: 1), (timer) async {
             getCourses();
         });
         super.initState();
@@ -47,7 +47,7 @@ class _CourseSchedulePageState extends State<CourseSchedulePage>
         super.dispose();
     }
 
-    void getCourses({bool first = false}) async {
+    void getCourses() async {
         try {
             Map<String, dynamic> data = jsonDecode((await NetUtils.get(
                 API.courseScheduleCourses,
@@ -64,7 +64,7 @@ class _CourseSchedulePageState extends State<CourseSchedulePage>
             courses = _list;
             coursesToday = _listToday;
             coursesWeek = _listWeek;
-            getCoursesPushed(first: first);
+            getCoursesPush();
             loading = false;
             if (mounted) setState(() {});
         } catch (e) {
@@ -72,7 +72,7 @@ class _CourseSchedulePageState extends State<CourseSchedulePage>
         }
     }
 
-    void getCoursesPushed({bool first = false}) async {
+    void getCoursesPush() async {
         Course _pushCourse;
         for (int i = 0; i < coursesToday.length; i++) {
             Course _c = coursesToday[i];
