@@ -11,7 +11,7 @@ class NotificationUtils{
     static FlutterLocalNotificationsPlugin plugin = FlutterLocalNotificationsPlugin();
 
     static void initSettings() {
-        AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('ic_launcher_trans');
+        AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('notify_logo');
         IOSInitializationSettings initializationSettingsIOS = IOSInitializationSettings(
             onDidReceiveLocalNotification: onDidReceiveLocalNotification,
         );

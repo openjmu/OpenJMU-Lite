@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
 
 import 'package:openjmu_lite/constants/constants.dart';
 import 'package:openjmu_lite/beans/event.dart';
@@ -71,8 +73,9 @@ class _SplashPageState extends State<SplashPage> {
         return Container(
             color: Constants.appThemeColor,
             child: Center(
-                child: Image.asset(
-                    "images/jmu_logo_circle.png",
+                child: SvgPicture.asset(
+                    "images/splash_page_logo.svg",
+                    color: Colors.white,
                     width: 120.0,
                     height: 120.0,
                 ),

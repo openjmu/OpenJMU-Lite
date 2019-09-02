@@ -81,11 +81,12 @@ class _ScorePageState extends State<ScorePage> with AutomaticKeepAliveClientMixi
     }
 
     void sendRequest() {
-        SocketUtils.mSocket.add(utf8.encode(jsonEncode({
+        String requestData = jsonEncode({
             "uid": "${UserAPI.currentUser.uid}",
             "sid": "${UserAPI.currentUser.sid}",
             "workid": "${UserAPI.currentUser.workId}",
-        })));
+        });
+        SocketUtils.mSocket.add(utf8.encode(requestData));
     }
 
     void loadScores() async {
