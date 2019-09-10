@@ -1,11 +1,11 @@
 name: openjmu_lite
 description: A lite version of OpenJMU for essential function.
 
-version: 0.2.1+10
+version: 0.2.1+11
 
 environment:
-    sdk: ">=2.2.2 <3.0.0"
-    flutter: 1.5.4-hotfix.2
+    sdk: ">=2.5.0 <3.0.0"
+    flutter: 1.9.1+hotfix.2
 
 dependencies:
     flutter:
@@ -17,13 +17,13 @@ dependencies:
     crypto: 2.1.2
     dio: 2.1.16
     event_bus: 1.1.0
-    extended_tabs: 0.2.0
+    extended_tabs: 0.2.2
     fluttertoast: 3.1.0
     flutter_cache_manager: 1.1.1
     flutter_local_notifications: 0.8.2
     flutter_platform_widgets: 0.12.0
     flutter_qr_reader: 1.0.2
-    flutter_svg: 0.12.4+2
+    flutter_svg: 0.13.1
     flutter_webview_plugin: 0.3.7
     intl: 0.15.8
     package_info: 0.4.0+6

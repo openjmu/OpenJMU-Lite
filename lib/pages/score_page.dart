@@ -93,9 +93,9 @@ class _ScorePageState extends State<ScorePage> with AutomaticKeepAliveClientMixi
         if (!socketInitialized) {
             SocketUtils.initSocket(API.scoreSocket).then((whatever) {
                 socketInitialized = true;
-                scoresSubscription = SocketUtils.mStream
-                        .transform(utf8.decoder)
-                        .listen(onReceive);
+                Stream _stream = utf8.decoder.bind(SocketUtils.mStream);
+                _stream.listen(onReceive);
+
                 sendRequest();
             }).catchError((e) {
                 debugPrint("Socket connect error: $e");

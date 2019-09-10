@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 
@@ -12,7 +13,7 @@ class SocketConfig {
 
 class SocketUtils {
     static Socket mSocket;
-    static Stream<List<int>> mStream;
+    static Stream<Uint8List> mStream;
 
     static Future initSocket(SocketConfig config) async {
         try {
