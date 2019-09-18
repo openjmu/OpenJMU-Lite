@@ -71,11 +71,11 @@ class _SplashPageState extends State<SplashPage> {
     @override
     Widget build(BuildContext context) {
         return Container(
-            color: Constants.appThemeColor,
+            color: Colors.white,
             child: Center(
                 child: SvgPicture.asset(
                     "images/splash_page_logo.svg",
-                    color: Colors.white,
+                    color: Constants.appThemeColor,
                     width: 120.0,
                     height: 120.0,
                 ),

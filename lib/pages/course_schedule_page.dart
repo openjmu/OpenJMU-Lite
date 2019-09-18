@@ -88,7 +88,7 @@ class _CourseSchedulePageState extends State<CourseSchedulePage>
                 List<TimeOfDay> times = CourseAPI.courseTime[_pushCourse.time];
                 TimeOfDay start = times[0], end = times[1];
                 if (_pushCourse.isEleven) end = CourseAPI.courseTime["11"][1];
-                await NotificationUtils.showNotification(
+                await NotificationUtils.show(
                     "上课提醒",
                     "${_pushCourse.name}　${start.format(context)} - ${end.format(context)}　${_pushCourse.location}"
                             "\n"
@@ -97,7 +97,7 @@ class _CourseSchedulePageState extends State<CourseSchedulePage>
                 );
             } else if (CourseAPI.notifySecond(_pushCourse)) {
                 coursePushed.add(_pushCourse.uniqueId);
-                await NotificationUtils.showNotification(
+                await NotificationUtils.show(
                     "上课提醒",
                     "${_pushCourse.name}还有5分钟就开始上课了~"
                             "\n"

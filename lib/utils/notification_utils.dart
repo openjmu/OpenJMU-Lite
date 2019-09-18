@@ -6,24 +6,23 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'package:openjmu_lite/constants/constants.dart';
 
-
-class NotificationUtils{
+class NotificationUtils {
     static FlutterLocalNotificationsPlugin plugin = FlutterLocalNotificationsPlugin();
 
     static void initSettings() {
-        AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('notify_logo');
-        IOSInitializationSettings initializationSettingsIOS = IOSInitializationSettings(
-            onDidReceiveLocalNotification: onDidReceiveLocalNotification,
+        AndroidInitializationSettings _settingsAndroid = AndroidInitializationSettings('notification');
+        IOSInitializationSettings _settingsIOS = IOSInitializationSettings(
+            onDidReceiveLocalNotification: _onReceive,
         );
-        InitializationSettings initializationSettings = InitializationSettings(
-            initializationSettingsAndroid,
-            initializationSettingsIOS,
+        InitializationSettings _settings = InitializationSettings(
+            _settingsAndroid,
+            _settingsIOS,
         );
-        NotificationUtils.plugin.initialize(initializationSettings, onSelectNotification: onSelectNotification);
+        NotificationUtils.plugin.initialize(_settings, onSelectNotification: _onSelect);
     }
 
-    static Future showNotification(String title, String body) async {
-        final AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
+    static Future show(String title, String body) async {
+        final AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
             'openjmu_channel',
             'openjmu_course',
             'Channel for course notification.',
@@ -33,24 +32,28 @@ class NotificationUtils{
             style: AndroidNotificationStyle.BigText,
             ticker: 'ticker',
         );
-        IOSNotificationDetails iOSPlatformChannelSpecifics = IOSNotificationDetails();
-        NotificationDetails platformChannelSpecifics = NotificationDetails(
-            androidPlatformChannelSpecifics,
-            iOSPlatformChannelSpecifics,
+        IOSNotificationDetails iOSDetails = IOSNotificationDetails();
+        NotificationDetails _details = NotificationDetails(
+            androidDetails,
+            iOSDetails,
         );
-        await NotificationUtils.plugin.show(0, title, body, platformChannelSpecifics);
+        await NotificationUtils.plugin.show(0, title, body, _details);
     }
 
-    static Future cancelAllNotifications() async {
+    static Future cancelAll() async {
         await NotificationUtils.plugin.cancelAll();
     }
 
-    static Future onDidReceiveLocalNotification(int id, String title, String body, String payload) async {}
+    static Future _onReceive(
+            int id,
+            String title,
+            String body,
+            String payload,
+            ) async {}
 
-    static Future onSelectNotification(String payload) async {
+    static Future _onSelect(String payload) async {
         if (payload != null) {
             debugPrint('notification payload: ' + payload);
         }
     }
-
 }
