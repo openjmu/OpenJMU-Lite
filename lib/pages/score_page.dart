@@ -281,9 +281,11 @@ class _ScorePageState extends State<ScorePage> with AutomaticKeepAliveClientMixi
         return Text(
             "${score.courseName}",
             style: Theme.of(context).textTheme.title.copyWith(
-                fontSize: Constants.size(22.0),
+                fontSize: Constants.size(20.0),
+                fontWeight: FontWeight.w300,
             ),
-            overflow: TextOverflow.ellipsis,
+            softWrap: false,
+            overflow: TextOverflow.fade,
         );
     }
 
@@ -311,9 +313,9 @@ class _ScorePageState extends State<ScorePage> with AutomaticKeepAliveClientMixi
                     TextSpan(
                         text: "$_score",
                         style: Theme.of(context).textTheme.title.copyWith(
-                            fontSize: Constants.size(32.0),
-                            fontWeight: FontWeight.bold,
-                            color: !pass ? Colors.red : Theme.of(context).textTheme.title.color
+                            fontSize: Constants.size(24.0),
+                            fontWeight: FontWeight.w600,
+                            color: !pass ? Colors.red : Colors.blueGrey
                             ,
                         ),
                     ),
@@ -326,7 +328,7 @@ class _ScorePageState extends State<ScorePage> with AutomaticKeepAliveClientMixi
                     TextSpan(
                         text: "$_scorePoint",
                         style: Theme.of(context).textTheme.subtitle.copyWith(
-                            fontSize: Constants.size(18.0),
+                            fontSize: Constants.size(16.0),
                         ),
                     ),
                 ],
@@ -340,6 +342,7 @@ class _ScorePageState extends State<ScorePage> with AutomaticKeepAliveClientMixi
                     "学分: ${score.credit.toStringAsFixed(1)}",
             style: Theme.of(context).textTheme.body1.copyWith(
                 fontSize: Constants.size(18.0),
+                fontWeight: FontWeight.w300,
             ),
         );
     }

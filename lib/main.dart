@@ -9,9 +9,10 @@ import 'package:openjmu_lite/utils/net_utils.dart';
 import 'package:openjmu_lite/utils/notification_utils.dart';
 import 'package:openjmu_lite/utils/router_utils.dart';
 import 'package:openjmu_lite/utils/shared_preference_utils.dart';
-
+import 'package:notification_permissions/notification_permissions.dart';
 
 void main() async {
+    await NotificationPermissions.getNotificationPermissionStatus();
     await SpUtils.initSharedPreferences();
     runApp(LiteApp());
 }

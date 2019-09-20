@@ -59,7 +59,7 @@ class _AboutPageState extends State<AboutPage> {
                                         fontSize: Constants.size(50.0),
                                     ),
                                 ),
-                                TextSpan(text: "　v$currentVersion", style: Theme.of(context).textTheme.subtitle),
+                                if (currentVersion != null) TextSpan(text: "　v$currentVersion", style: Theme.of(context).textTheme.subtitle),
                             ])),
                         ),
                         SizedBox(height: Constants.size(20.0)),
@@ -95,7 +95,7 @@ class _AboutPageState extends State<AboutPage> {
         return Scaffold(
             appBar: AppBar(
                 title: Text(
-                    "关于OpenJMU",
+                    "关于OpenJMU Lite",
                     style: Theme.of(context).textTheme.title.copyWith(
                         color: Colors.white,
                         fontSize: Constants.size(21.0),
