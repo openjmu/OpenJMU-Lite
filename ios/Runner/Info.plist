@@ -3,7 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>OpenJMU Lite</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -11,7 +13,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>openjmu.lite</string>
+	<string>openjmu_lite</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -22,6 +24,10 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -29,8 +35,7 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
@@ -39,9 +44,34 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>secu</key>
+	<string></string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
+	<key>NSContactsUsageDescription</key>
+	<string>访问你的联系人信息以提供服务</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>访问你的日历以添加课程日程</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>访问你的图库以上传图片</string>
+	<key>NSCameraUsageDescription</key>
+	<string>访问你的相机以拍摄并上传图片</string>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>访问你的乐库以提供服务</string>
+	<key>NSMotionUsageDescription</key>
+	<string>访问陀螺仪以适配旋转</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>访问语音识别以提供反馈服务</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>访问你的位置以提供定位服务</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>访问你的位置以提供定位服务</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>io.flutter.embedded_views_preview</key>
-	<true/>
 </dict>
 </plist>
