@@ -49,3 +49,10 @@ class AppCenterRefreshEvent {
 }
 class ScoreRefreshEvent {}
 class CourseScheduleRefreshEvent {}
+
+class BrightnessChangedEvent {
+    bool isDark;
+    BrightnessChangedEvent(bool isDark) {
+        this.isDark = isDark;
+    }
+}

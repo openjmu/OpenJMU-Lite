@@ -4,21 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:openjmu_lite/pages/about_page.dart';
 import 'package:openjmu_lite/pages/login_page.dart';
 import 'package:openjmu_lite/pages/main_page.dart';
+import 'package:openjmu_lite/pages/new_login_page.dart';
 import 'package:openjmu_lite/pages/scan_qrcode_page.dart';
 import 'package:openjmu_lite/pages/splash_page.dart';
 import 'package:openjmu_lite/pages/user_page.dart';
 
 class RouterUtils {
-    static final String pathDivider = "/";
 
     static Map<String, WidgetBuilder> routes = {
-        "${pathDivider}splash": (BuildContext context) => SplashPage(),
-        "${pathDivider}login": (BuildContext context) => LoginPage(),
-        "${pathDivider}main": (BuildContext context) => MainPage(),
+        "/splash": (BuildContext context) => SplashPage(),
+        "/login": (BuildContext context) => NewLoginPage(),
+        "/main": (BuildContext context) => MainPage(),
 
-        "${pathDivider}user": (BuildContext context, {Map<String, dynamic> arguments}) => UserPage(),
-        "${pathDivider}scanqrcode": (BuildContext context) => ScanQrCodePage(),
-        "${pathDivider}about": (BuildContext context) => AboutPage(),
+        "/user": (BuildContext context, {Map<String, dynamic> arguments}) => UserPage(),
+        "/scanqrcode": (BuildContext context) => ScanQrCodePage(),
+        "/about": (BuildContext context) => AboutPage(),
 
 //        "${pathDivider}test": (BuildContext context) => (),
     };

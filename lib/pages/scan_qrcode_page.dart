@@ -4,6 +4,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_qr_reader/qrcode_reader_view.dart';
 
 import 'package:openjmu_lite/apis/api.dart';
+import 'package:openjmu_lite/constants/configs.dart';
 import 'package:openjmu_lite/constants/constants.dart';
 //import 'package:openjmu_lite/pages/user/user_page.dart';
 import 'package:openjmu_lite/pages/web_page.dart';
@@ -55,7 +56,7 @@ class _ScanQrCodePageState extends State<ScanQrCodePage> {
     Widget build(BuildContext context) {
         return Scaffold(
             appBar: AppBar(
-                backgroundColor: Constants.appThemeColor,
+                backgroundColor: Configs.appThemeColor,
                 title: Text(
                     "扫描二维码",
                     style: Theme.of(context).textTheme.title.copyWith(

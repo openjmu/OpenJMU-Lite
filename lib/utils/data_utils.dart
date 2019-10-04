@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:openjmu_lite/beans/bean.dart';
+import 'package:openjmu_lite/constants/themes.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:openjmu_lite/apis/api.dart';
@@ -24,6 +26,7 @@ class DataUtils {
             Map<String, dynamic> data = response.data;
             UserAPI.currentUser.sid = data['sid'];
             UserAPI.currentUser.ticket = data['ticket'];
+
             Map<String, dynamic> user = (await UserAPI.getUserInfo(uid: data['uid'])).data;
             Map<String, dynamic> userInfo = {
                 'sid': data['sid'],
@@ -33,6 +36,7 @@ class DataUtils {
                 'ticket': data['ticket'],
                 'blowfish': blowfish,
                 'isTeacher': int.parse(user['type'].toString()) == 1,
+                'isCY': checkCY(user['workid']),
                 'workId': user['workid'],
                 'gender': int.parse(user['gender'].toString()),
             };
@@ -62,6 +66,7 @@ class DataUtils {
     static Future logout(context) async {
         await UserAPI.logout();
         await SpUtils.clearLoginInfo();
+        NetUtils.clearCookie();
         Constants.eventBus.fire(LogoutEvent(context));
         showShortToast("退出登录成功");
     }
@@ -75,12 +80,26 @@ class DataUtils {
         }
     }
 
+    static bool checkCY(String workId) {
+        if (workId.length != 12) {
+            return false;
+        } else {
+            final int code = int.tryParse(workId.substring(4, 6));
+            if (code >= 41 && code <= 45) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
     static Future recoverLoginInfo() async {
         try {
             Map<String, dynamic> info = SpUtils.getTicket();
             UserAPI.currentUser.sid = info['ticket'];
             UserAPI.currentUser.blowfish = info['blowfish'];
             await getTicket();
+            Themes.isDark = SpUtils.sp.getBool(SpUtils.spBrightness);
         } catch (e) {
             debugPrint("Error in recover login info: $e");
         }
@@ -94,6 +113,7 @@ class DataUtils {
             );
             Map<String, dynamic> response = (await NetUtils.post(API.loginTicket, data: params)).data;
             await SpUtils.updateSid(response);
+            NetUtils.updateCookie(API.loginTicket);
             await getUserInfo();
             bool isWizard = true;
             if (!UserAPI.currentUser.isTeacher) isWizard = await checkWizard();
@@ -111,7 +131,7 @@ class DataUtils {
     }
 
     static Future getUserInfo([uid]) async {
-        await NetUtils.getWithCookieSet(
+        await NetUtils.get(
             "${API.userInfo}?uid=${uid ?? UserAPI.currentUser.uid}",
         ).then((response) {
             Map<String, dynamic> data = response.data;
@@ -123,6 +143,7 @@ class DataUtils {
                 'ticket': UserAPI.currentUser.sid,
                 'blowfish': UserAPI.currentUser.blowfish,
                 'isTeacher': int.parse(data['type'].toString()) == 1,
+                'isCY': checkCY(data['workid']),
                 'workId': data['workid'],
                 'gender': int.parse(data['gender'].toString()),
             };
@@ -136,7 +157,7 @@ class DataUtils {
     }
 
     static void setUserInfo(data) {
-        UserAPI.currentUser = UserAPI.createUserInfo(data);
+        UserAPI.currentUser = UserInfo.fromJson(data);
     }
 
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:openjmu_lite/constants/configs.dart';
 import 'package:package_info/package_info.dart';
 
 import 'package:openjmu_lite/constants/constants.dart';
@@ -55,7 +56,7 @@ class _AboutPageState extends State<AboutPage> {
                                     text: "OpenJmu Lite",
                                     style: TextStyle(
                                         fontFamily: 'chocolate',
-                                        color: Constants.appThemeColor,
+                                        color: Configs.appThemeColor,
                                         fontSize: Constants.size(50.0),
                                     ),
                                 ),

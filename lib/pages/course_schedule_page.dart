@@ -3,14 +3,18 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:extended_tabs/extended_tabs.dart';
+import 'package:intl/intl.dart';
 
 import 'package:openjmu_lite/apis/api.dart';
 import 'package:openjmu_lite/apis/courses_api.dart';
+import 'package:openjmu_lite/apis/date_api.dart';
 import 'package:openjmu_lite/apis/user_api.dart';
 import 'package:openjmu_lite/beans/bean.dart';
 import 'package:openjmu_lite/constants/constants.dart';
 import 'package:openjmu_lite/utils/net_utils.dart';
 import 'package:openjmu_lite/utils/notification_utils.dart';
+import 'package:openjmu_lite/widgets/rounded_tab_indicator.dart';
+import 'package:openjmu_lite/widgets/stack_appbar.dart';
 
 
 class CourseSchedulePage extends StatefulWidget {
@@ -18,8 +22,7 @@ class CourseSchedulePage extends StatefulWidget {
     _CourseSchedulePageState createState() => _CourseSchedulePageState();
 }
 
-class _CourseSchedulePageState extends State<CourseSchedulePage>
-        with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+class _CourseSchedulePageState extends State<CourseSchedulePage> with TickerProviderStateMixin {
     bool loading = true, loaded = false;
     List<Course> courses;
     List<Course> coursesToday;
@@ -28,8 +31,10 @@ class _CourseSchedulePageState extends State<CourseSchedulePage>
     TabController _tabController;
     Timer _courseRefreshTimer;
 
-    @override
-    bool get wantKeepAlive => true;
+    int currentWeek;
+    DateTime now;
+    String hello = "你好";
+    Timer updateHelloTimer;
 
     @override
     void initState() {
@@ -38,13 +43,66 @@ class _CourseSchedulePageState extends State<CourseSchedulePage>
         _courseRefreshTimer = Timer.periodic(Duration(minutes: 1), (timer) async {
             getCourses();
         });
+
+        getCurrentWeek();
+        if (mounted && updateHelloTimer != null) {
+            updateHelloTimer = Timer.periodic(Duration(minutes: 1), (timer) {
+                getCurrentWeek();
+            });
+        }
         super.initState();
     }
 
     @override
     void dispose() {
         _courseRefreshTimer?.cancel();
+        updateHelloTimer?.cancel();
         super.dispose();
+    }
+
+    void getCurrentWeek() async {
+        if (DateAPI.startDate == null) {
+            String _day = jsonDecode((await DateAPI.getCurrentWeek()).data)['start'];
+//            String _day = "2019-07-22";
+            DateAPI.startDate = DateTime.parse(_day);
+        }
+        now = DateTime.now();
+        DateAPI.difference = DateAPI.startDate.difference(now).inDays - 1;
+        DateAPI.currentWeek = -(DateAPI.difference / 7).floor();
+        if (DateAPI.currentWeek <= 20) {
+            currentWeek = DateAPI.currentWeek;
+        } else {
+            currentWeek = null;
+        }
+        if (mounted) setState(() {});
+    }
+
+    Widget currentDay() {
+        return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: RichText(
+                text: TextSpan(
+                    children: <TextSpan>[
+                        TextSpan(text: "今天是"),
+                        TextSpan(text: "${DateFormat("MMMdd日，", "zh_CN").format(now)}"),
+                        TextSpan(text: "${DateFormat("EEEE，", "zh_CN").format(now)}"),
+                        if (currentWeek != null)
+                            if (currentWeek >= 1 && currentWeek <= 20)
+                                TextSpan(text: "第$currentWeek周")
+                            else if (currentWeek == 0)
+                                TextSpan(text: "下周开学")
+                            else if (currentWeek < 0)
+                                    TextSpan(text: "距离开学还有$currentWeek周"),
+                        TextSpan(text: "。"),
+                    ],
+                    style: TextStyle(
+                        color: Colors.grey[350],
+                        fontSize: 16.0,
+                    ),
+                ),
+                textAlign: TextAlign.center,
+            ),
+        );
     }
 
     void getCourses() async {
@@ -112,10 +170,8 @@ class _CourseSchedulePageState extends State<CourseSchedulePage>
         return Text(
             course.name,
             style: TextStyle(
-                color: CourseAPI.isActive(course)
-                        ? Colors.white
-                        : CourseAPI.isFinished(course) && type == CourseType.today
-                        ? Colors.grey[400]
+                color: CourseAPI.isFinished(course) && type == CourseType.today
+                        ? Colors.grey[500]
                         : Colors.black
                 ,
                 fontSize: Constants.size(20.0),
@@ -129,9 +185,7 @@ class _CourseSchedulePageState extends State<CourseSchedulePage>
         return Text(
             CourseAPI.getCourseTime(context, course, type),
             style: TextStyle(
-                color: CourseAPI.isActive(course)
-                        ? Colors.white
-                        : CourseAPI.isFinished(course) && type == CourseType.today
+                color: CourseAPI.isFinished(course) && type == CourseType.today
                         ? Colors.grey[400]
                         : Colors.black
                 ,
@@ -144,9 +198,7 @@ class _CourseSchedulePageState extends State<CourseSchedulePage>
         return Text(
             CourseAPI.getCourseLocation(context, course, type),
             style: TextStyle(
-                color: CourseAPI.isActive(course)
-                        ? Colors.white
-                        : CourseAPI.isFinished(course) && type == CourseType.today
+                color: CourseAPI.isFinished(course) && type == CourseType.today
                         ? Colors.grey[400]
                         : Colors.black
                 ,
@@ -157,134 +209,68 @@ class _CourseSchedulePageState extends State<CourseSchedulePage>
 
     Widget courseWidget(Course course, CourseType type) {
         return Expanded(
-            child: Container(
-                padding: EdgeInsets.symmetric(
-                    horizontal: Constants.size(24.0),
-                    vertical: Constants.size(8.0),
+            child: SizedBox(
+                height: Constants.size(84.0),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                        courseName(course, type),
+                        courseTime(course, type),
+                        if (course.location != "") courseLocation(course, type),
+                    ],
                 ),
+            ),
+        );
+    }
+
+    Widget timelineIndicator(Course course, CourseType type) {
+        Color color;
+        if (CourseAPI.isFinished(course)) {
+            color = Colors.grey[400];
+        } else if (CourseAPI.isActive(course)) {
+            color = Colors.redAccent;
+        }
+        if (type == CourseType.today) {
+            return Container(
+                width: Constants.size(8.0),
+                height: Constants.size(84.0),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(Constants.size(16.0)),
-                    color: CourseAPI.isActive(course)
-                            ? Constants.appThemeColor
-                            : Theme.of(context).canvasColor
-                    ,
-                ),
-                child: SizedBox(
-                    height: Constants.size(84.0),
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                            courseName(course, type),
-                            courseTime(course, type),
-                            if (course.location != "") courseLocation(course, type),
-                        ],
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(5.0),
+                        bottomRight: Radius.circular(5.0),
                     ),
+                    color: color,
                 ),
-            ),
-        );
-    }
-
-    Widget inProgressIndicator(Course course, CourseType type) {
-        return Row(
-            children: <Widget>[
-                Container(
-                    width: Constants.size(18.0),
-                    height: Constants.size(18.0),
-                    decoration: BoxDecoration(
-                        border: !CourseAPI.isActive(course) ? Border.all(
-                            color: CourseAPI.isFinished(course) && type == CourseType.today
-                                    ? Constants.appThemeColor.withAlpha(80)
-                                    : Constants.appThemeColor
-                            ,
-                            width: Constants.size(3.0),
-                        ) : null,
-                        color: CourseAPI.isActive(course) ? Constants.appThemeColor : null,
-                        shape: BoxShape.circle,
-                    ),
-                    child: CourseAPI.isActive(course) ? Center(
-                        child: Icon(
-                            Icons.check,
-                            color: Colors.white,
-                            size: Constants.size(18.0),
-                        ),
-                    ) : null,
-                ),
-                Constants.emptyDivider(width: 16.0),
-                if (CourseAPI.inReadyTime(course) && type == CourseType.today) Text(
-                    "准备上课",
-                    style: Theme.of(context).textTheme.body1.copyWith(
-                        color: Constants.appThemeColor,
-                        fontSize: Constants.size(18.0),
-                        fontWeight: FontWeight.bold,
-                    ),
-                ),
-                if (CourseAPI.isFinished(course) && type == CourseType.today) Text(
-                    "已下课",
-                    style: Theme.of(context).textTheme.body1.copyWith(
-                        color: Constants.appThemeColor.withAlpha(80),
-                        fontSize: Constants.size(18.0),
-                        fontWeight: FontWeight.bold,
-                    ),
-                ),
-                if (CourseAPI.isActive(course)) Text(
-                    "正在上课",
-                    style: Theme.of(context).textTheme.body1.copyWith(
-                        color: Constants.appThemeColor,
-                        fontSize: Constants.size(18.0),
-                        fontWeight: FontWeight.bold,
-                    ),
-                ),
-            ],
-        );
-    }
-
-    Widget timelineIndicator(Course course) {
-        return SizedBox(
-            width: Constants.size(18.0),
-            child: Center(
-                child: Container(
-                    width: Constants.size(4.0),
-                    height: Constants.size(100.0),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(Constants.size(10.0)),
-                        color: CourseAPI.isActive(course)
-                                ? Constants.appThemeColor
-                                : Constants.appThemeColor.withAlpha(80)
-                        ,
-                    ),
-                ),
-            ),
-        );
+            );
+        } else {
+            return SizedBox(
+                width: Constants.size(8.0),
+                height: Constants.size(84.0),
+            );
+        }
     }
 
     Widget courseTabs(context) {
-        return SizedBox(
-            height: Constants.size(36.0),
-            child: Row(
-                children: <Widget>[
-                    Flexible(
-                        child: TabBar(
-                            isScrollable: true,
-                            controller: _tabController,
-                            labelColor: Theme.of(context).textTheme.title.color,
-                            labelStyle: Theme.of(context).textTheme.title.copyWith(
-                                fontSize: Constants.size(16.0),
-                                fontWeight: FontWeight.bold,
-                            ),
-                            labelPadding: EdgeInsets.symmetric(horizontal: Constants.size(24.0)),
-                            unselectedLabelStyle: Theme.of(context).textTheme.title.copyWith(
-                                fontSize: Constants.size(16.0),
-                                fontWeight: FontWeight.normal,
-                            ),
-                            indicatorWeight: Constants.size(3.0),
-                            tabs: <Tab>[
-                                Tab(text: "今日"),
-                                Tab(text: "本周"),
-                                Tab(text: "学期"),
-                            ],
-                        ),
-                    ),
+        return Flexible(
+            child: TabBar(
+                isScrollable: true,
+                controller: _tabController,
+                labelColor: Theme.of(context).textTheme.title.color,
+                labelStyle: Theme.of(context).textTheme.title.copyWith(
+                    fontSize: 19.0,
+                    fontWeight: FontWeight.bold,
+                ),
+                labelPadding: EdgeInsets.symmetric(horizontal: Constants.size(20.0)),
+                unselectedLabelStyle: Theme.of(context).textTheme.title.copyWith(
+                    fontSize: 19.0,
+                    fontWeight: FontWeight.normal,
+                ),
+                indicator: RoundedTabIndicator(),
+                tabs: <Tab>[
+                    Tab(text: "今日"),
+                    Tab(text: "本周"),
+                    Tab(text: "学期"),
                 ],
             ),
         );
@@ -313,36 +299,41 @@ class _CourseSchedulePageState extends State<CourseSchedulePage>
         }
         return !loading && !loaded
                 ?
-        showCourse ? ListView.builder(
+        showCourse ? ListView.separated(
             physics: const BouncingScrollPhysics(),
-            itemCount: _courses.length,
-            itemBuilder: (context, index) {
-                Course course = _courses[index];
-                return Container(
-                    margin: EdgeInsets.only(
-                        top: Constants.size(index == 0 ? 20.0 : 8.0),
-                        bottom: Constants.size(index == _courses.length - 1 ? 20.0 : 8.0),
-                    ),
-                    padding: EdgeInsets.symmetric(
-                        horizontal: Constants.size(24.0),
-                    ),
-                    child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                            inProgressIndicator(course, type),
-                            Constants.emptyDivider(height: 8.0),
-                            Row(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: <Widget>[
-                                    timelineIndicator(course),
-                                    Constants.emptyDivider(width: 16.0),
-                                    courseWidget(course, type),
-                                ],
-                            ),
-                        ],
-                    ),
+            separatorBuilder: (_, __) {
+                return Constants.separator(
+                    context,
+                    height: 1.0,
+                    color: Theme.of(context).dividerColor,
                 );
+            },
+            itemCount: _courses.length + 1,
+            itemBuilder: (context, index) {
+                if (index == _courses.length) {
+                    return currentDay();
+                } else {
+                    Course course = _courses[index];
+                    return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10.0,
+                        ),
+                        child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                                Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: <Widget>[
+                                        timelineIndicator(course, type),
+                                        Constants.emptyDivider(width: 16.0),
+                                        courseWidget(course, type),
+                                    ],
+                                ),
+                            ],
+                        ),
+                    );
+                }
             },
         ) : Center(
             child: Text(
@@ -360,29 +351,31 @@ class _CourseSchedulePageState extends State<CourseSchedulePage>
                     topLeft: Radius.circular(Constants.size(30.0)),
                     topRight: Radius.circular(Constants.size(30.0)),
                 ),
-                color: Colors.white,
             ),
             child: Constants.progressIndicator(),
         );
     }
 
-    @mustCallSuper
+    @override
     Widget build(BuildContext context) {
-        super.build(context);
-        return Column(
-            children: <Widget>[
-                courseTabs(context),
-                Expanded(
-                    child: ExtendedTabBarView(
-                        controller: _tabController,
-                        children: <Widget>[
-                            courseWrapper(context, CourseType.today),
-                            courseWrapper(context, CourseType.week),
-                            courseWrapper(context, CourseType.term),
-                        ],
+        return Scaffold(
+            appBar: StackAppBar(
+                child: courseTabs(context),
+            ),
+            body: Column(
+                children: <Widget>[
+                    Expanded(
+                        child: ExtendedTabBarView(
+                            controller: _tabController,
+                            children: <Widget>[
+                                courseWrapper(context, CourseType.today),
+                                courseWrapper(context, CourseType.week),
+                                courseWrapper(context, CourseType.term),
+                            ],
+                        ),
                     ),
-                ),
-            ],
+                ],
+            ),
         );
     }
 }

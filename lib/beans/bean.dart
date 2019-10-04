@@ -38,7 +38,7 @@ class User {
 ///
 /// 用户信息实体
 /// [sid] 用户token, [ticket] 用户当前token, [blowfish] 用户设备uuid
-/// [uid] 用户uid, [workId] 工号/学号,
+/// [uid] 用户uid, [unitId] 组织/学校id, [workId] 工号/学号, [classId] 班级id,
 /// [name] 名字, [signature] 签名, [gender] 性别, [isFollowing] 是否已关注
 ///
 class UserInfo {
@@ -47,9 +47,12 @@ class UserInfo {
     String ticket;
     String blowfish;
     bool isTeacher;
+    bool isCY;
 
     /// Common Object
     int uid;
+    int unitId;
+    int classId;
     int gender;
     String name;
     String signature;
@@ -64,7 +67,10 @@ class UserInfo {
         this.ticket,
         this.blowfish,
         this.isTeacher,
+        this.isCY,
+        this.unitId,
         this.workId,
+        this.classId,
         this.gender,
         this.isFollowing,
     });
@@ -85,12 +91,35 @@ class UserInfo {
             'ticket': ticket,
             'blowfish': blowfish,
             'isTeacher': isTeacher,
+            'isCY': isCY,
+            'unitId': unitId,
             'workId': workId,
+//            'classId': classId,
             'gender': gender,
             'isFollowing': isFollowing,
         })}";
     }
 
+    factory UserInfo.fromJson(Map<String, dynamic> json) {
+        json.forEach((k, v) {
+            if (json[k] == "") json[k] = null;
+        });
+        return UserInfo(
+            sid: json['sid'],
+            uid: json['uid'],
+            name: json['username'] ?? json['uid'].toString(),
+            signature: json['signature'],
+            ticket: json['sid'],
+            blowfish: json['blowfish'],
+            isTeacher: json['isTeacher'] ?? int.parse(json['type'].toString()) == 1,
+            isCY: json['isCY'],
+            unitId: json['unitId'] ?? json['unitid'],
+            workId: (json['workId'] ?? json['workid'] ?? json['uid']).toString(),
+            classId: null,
+            gender: int.parse(json['gender'].toString()),
+            isFollowing: false,
+        );
+    }
 }
 
 ///
@@ -221,13 +250,24 @@ class WebApp {
 
     WebApp({this.id, this.sequence, this.code, this.name, this.url, this.menuType});
 
+    factory WebApp.fromJson(Map<String, dynamic> json) {
+        return WebApp(
+            id: json['appid'],
+            sequence: json['sequence'],
+            code: json['code'],
+            name: json['name'],
+            url: json['url'],
+            menuType: json['menutype'],
+        );
+    }
+
     @override
     bool operator ==(Object other) => identical(this, other) || other is WebApp && runtimeType == other.runtimeType && id == other.id;
 
     @override
     int get hashCode => id.hashCode;
 
-    static Map category() => {
+    static Map category = {
         "10": "个人事务",
         "A4": "我的服务",
         "A3": "我的系统",

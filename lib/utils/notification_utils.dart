@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:openjmu_lite/constants/configs.dart';
 
 import 'package:openjmu_lite/constants/constants.dart';
 
@@ -28,7 +29,7 @@ class NotificationUtils {
             'Channel for course notification.',
             importance: Importance.Max,
             priority: Priority.High,
-            color: Constants.appThemeColor,
+            color: Configs.appThemeColor,
             style: AndroidNotificationStyle.BigText,
             ticker: 'ticker',
         );

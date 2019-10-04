@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:openjmu_lite/constants/configs.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:openjmu_lite/constants/constants.dart';
@@ -42,7 +43,7 @@ class WebPageState extends State<WebPage> {
 
     bool isLoading = true;
     String _url, _title;
-    Color currentThemeColor = Constants.appThemeColor;
+    Color currentThemeColor = Configs.appThemeColor;
     double currentProgress = 0.0;
 
     @override

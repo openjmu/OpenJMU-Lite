@@ -14,13 +14,8 @@ class API {
 
     /// Hosts.
     static final String openjmuHost = "openjmu.jmu.edu.cn";
-    static final String wbHost = "https://wb.jmu.edu.cn";
-    static final String wpHost = "https://wp.jmu.edu.cn";
-    static final String file99Host = "https://file99.jmu.edu.cn";
     static final String oa99Host = "https://oa99.jmu.edu.cn";
     static final String oap99Host = "https://oap99.jmu.edu.cn";
-    static final String middle99Host = "https://middle99.jmu.edu.cn";
-    static final String upApiHost = "https://upapi.jmu.edu.cn";
     static final String labsHost = "http://labs.jmu.edu.cn";
 
     /// 认证相关

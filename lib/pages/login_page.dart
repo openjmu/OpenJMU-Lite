@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 import 'package:openjmu_lite/beans/event.dart';
+import 'package:openjmu_lite/constants/configs.dart';
 import 'package:openjmu_lite/constants/constants.dart';
 import 'package:openjmu_lite/pages/web_page.dart';
 import 'package:openjmu_lite/utils/data_utils.dart';
@@ -80,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: Text(
                         "LITE",
                         style: TextStyle(
-                            color: Constants.appThemeColor,
+                            color: Configs.appThemeColor,
                             fontSize: Constants.size(20.0),
                             fontWeight: FontWeight.bold,
                             fontFamily: "ProductSans",
@@ -131,10 +132,11 @@ class _LoginPageState extends State<LoginPage> {
                     color: Theme.of(context).textTheme.title.color,
                     fontSize: Constants.size(18.0),
                 ),
-                cursorColor: Constants.appThemeColor,
+                cursorColor: Configs.appThemeColor,
                 onSaved: (String value) => _username = value,
                 validator: (String value) {
                     if (value.isEmpty) return '请输入账户';
+                    return null;
                 },
                 keyboardType: TextInputType.number,
             ),
@@ -154,6 +156,7 @@ class _LoginPageState extends State<LoginPage> {
                 obscureText: _isObscure,
                 validator: (String value) {
                     if (value.isEmpty) return '请输入密码';
+                    return null;
                 },
                 decoration: InputDecoration(
                     border: InputBorder.none,
@@ -180,7 +183,7 @@ class _LoginPageState extends State<LoginPage> {
                                 _isObscure = !_isObscure;
                                 _defaultIconColor = _isObscure
                                         ? Colors.grey
-                                        : Constants.appThemeColor;
+                                        : Configs.appThemeColor;
                             });
                         },
                     ),
@@ -189,7 +192,7 @@ class _LoginPageState extends State<LoginPage> {
                     color: Theme.of(context).textTheme.title.color,
                     fontSize: Constants.size(18.0),
                 ),
-                cursorColor: Constants.appThemeColor,
+                cursorColor: Configs.appThemeColor,
             ),
         );
     }
@@ -200,7 +203,7 @@ class _LoginPageState extends State<LoginPage> {
             width: double.infinity,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(Constants.size(16.0)),
-                color: Constants.appThemeColor,
+                color: Configs.appThemeColor,
             ),
             child: !_isLoading
                     ?
@@ -326,43 +329,29 @@ class _LoginPageState extends State<LoginPage> {
     @override
     Widget build(BuildContext context) {
         return Scaffold(
-            backgroundColor: Constants.appThemeColor,
-            body: Stack(
+            backgroundColor: Configs.appThemeColor,
+            body: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                    Positioned(
-                        top: 0.0,
-                        left: 0.0,
-                        right: 0.0,
-                        child: Image.asset(
-                            "images/login_bg.png",
-                            height: MediaQuery.of(context).size.height / 3 * 2,
-                            fit: BoxFit.fitHeight,
+                    Expanded(child: Center(child: logo())),
+                    ClipRRect(
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(Constants.size(30.0),),
+                            topRight: Radius.circular(Constants.size(30.0),),
                         ),
-                    ),
-                    Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                            Expanded(child: Center(child: logo())),
-                            ClipRRect(
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(Constants.size(30.0),),
-                                    topRight: Radius.circular(Constants.size(30.0),),
-                                ),
-                                child: Container(
-                                    color: Colors.white,
-                                    padding: EdgeInsets.all(Constants.size(40.0),),
-                                    child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: <Widget>[
-                                            loginForm(),
-                                            loginButton(context),
-                                            actions(context),
-                                        ],
-                                    ),
-                                ),
-                            )
-                        ],
-                    ),
+                        child: Container(
+                            color: Colors.white,
+                            padding: EdgeInsets.all(Constants.size(40.0),),
+                            child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                    loginForm(),
+                                    loginButton(context),
+                                    actions(context),
+                                ],
+                            ),
+                        ),
+                    )
                 ],
             ),
         );

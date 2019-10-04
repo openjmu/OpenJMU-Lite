@@ -6,11 +6,12 @@ import 'package:flutter/cupertino.dart' show CupertinoActivityIndicator;
 import 'package:crypto/crypto.dart';
 import 'package:event_bus/event_bus.dart';
 
+import 'package:openjmu_lite/constants/configs.dart';
+
+
 class Constants {
-    static final appTitle = 'OpenJMU Lite';
-    static final appThemeColor = Color.fromARGB(0xff, 0xd3, 0x2f, 0x2f);
-    static double fontScale = 1.0;
-    static double size(double size) => size * fontScale;
+    static GlobalKey<NavigatorState> navigatorKey;
+    static double size(double size) => size * Configs.fontScale;
 
     static final EventBus eventBus = EventBus();
 

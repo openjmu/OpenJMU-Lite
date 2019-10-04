@@ -6,6 +6,7 @@ import 'package:openjmu_lite/apis/user_api.dart';
 class SpUtils {
     static final String spIsLogin           = "isLogin";
     static final String spIsTeacher         = "isTeacher";
+    static final String spIsCY              = "isCY";
     static final String spUserSid           = "sid";
     static final String spTicket            = "ticket";
     static final String spBlowfish          = "blowfish";
@@ -31,6 +32,7 @@ class SpUtils {
         if (data != null) {
             await sp.setBool(spIsLogin, true);
             await sp.setBool(spIsTeacher, data['isTeacher']);
+            await sp.setBool(spIsCY, data['isCY']);
             await sp.setString(spUserSid, data['sid']);
             await sp.setString(spTicket, data['ticket']);
             await sp.setString(spBlowfish, data['blowfish']);
@@ -42,6 +44,7 @@ class SpUtils {
     static Future clearLoginInfo() async {
         await sp.remove(spIsLogin);
         await sp.remove(spIsTeacher);
+        await sp.remove(spIsCY);
         await sp.remove(spUserSid);
         await sp.remove(spTicket);
         await sp.remove(spBlowfish);

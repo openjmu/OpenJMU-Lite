@@ -7,8 +7,11 @@ import 'package:openjmu_lite/apis/api.dart';
 import 'package:openjmu_lite/apis/user_api.dart';
 import 'package:openjmu_lite/beans/bean.dart';
 import 'package:openjmu_lite/beans/event.dart';
+import 'package:openjmu_lite/constants/configs.dart';
 import 'package:openjmu_lite/constants/constants.dart';
+import 'package:openjmu_lite/constants/themes.dart';
 import 'package:openjmu_lite/utils/socket_utils.dart';
+import 'package:openjmu_lite/widgets/stack_appbar.dart';
 
 
 class ScorePage extends StatefulWidget {
@@ -16,7 +19,8 @@ class ScorePage extends StatefulWidget {
     State<StatefulWidget> createState() => _ScorePageState();
 }
 
-class _ScorePageState extends State<ScorePage> with AutomaticKeepAliveClientMixin {
+class _ScorePageState extends State<ScorePage> {
+    final Color currentThemeColor = Configs.appThemeColor;
     final Map<String, Map<String, double>> fiveBandScale = {
         "优秀": {
             "score": 95.0,
@@ -56,9 +60,6 @@ class _ScorePageState extends State<ScorePage> with AutomaticKeepAliveClientMixi
     String _scoreData = "";
     Widget errorWidget = SizedBox();
     StreamSubscription scoresSubscription;
-
-    @override
-    bool get wantKeepAlive => true;
 
     @override
     void initState() {
@@ -210,6 +211,32 @@ class _ScorePageState extends State<ScorePage> with AutomaticKeepAliveClientMixi
         if (mounted) setState(() {});
     }
 
+    Widget termsWidget(context) {
+        return Center(child: Container(
+            padding: EdgeInsets.symmetric(
+                vertical: Constants.size(5.0),
+            ),
+            height: Constants.size(80.0),
+            child: ListView.builder(
+                padding: EdgeInsets.zero,
+                scrollDirection: Axis.horizontal,
+                physics: BouncingScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: terms.length + 2,
+                itemBuilder: (context, index) {
+                    if (index == 0 || index == terms.length + 1) {
+                        return SizedBox(width: Constants.size(5.0));
+                    } else {
+                        return _term(
+                            terms[terms.length - index ],
+                            terms.length - index,
+                        );
+                    }
+                },
+            ),
+        ));
+    }
+
     Widget _term(term, index) {
         String _term = term.toString();
         int currentYear = int.parse(_term.substring(0, 4));
@@ -230,7 +257,7 @@ class _ScorePageState extends State<ScorePage> with AutomaticKeepAliveClientMixi
                             ),
                         ],
                         color: _term == termSelected
-                                ? Constants.appThemeColor
+                                ? Configs.appThemeColor
                                 : Theme.of(context).canvasColor
                         ,
                     ),
@@ -277,15 +304,33 @@ class _ScorePageState extends State<ScorePage> with AutomaticKeepAliveClientMixi
         );
     }
 
-    Widget _name(Score score) {
-        return Text(
-            "${score.courseName}",
-            style: Theme.of(context).textTheme.title.copyWith(
-                fontSize: Constants.size(20.0),
-                fontWeight: FontWeight.w300,
+    Widget _statusIndicator(Score score) {
+        Color color = Themes.scorePassed[isPass(score.score)];
+        return Container(
+            margin: const EdgeInsets.only(right: 8.0),
+            width: Constants.size(8.0),
+            height: Constants.size(36.0),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(5.0),
+                    bottomRight: Radius.circular(5.0),
+                ),
+                color: color,
             ),
-            softWrap: false,
-            overflow: TextOverflow.fade,
+        );
+    }
+
+    Widget _name(Score score) {
+        return Expanded(
+            child: Text(
+                "${score.courseName}",
+                style: Theme.of(context).textTheme.title.copyWith(
+                    fontSize: Constants.size(20.0),
+                    fontWeight: FontWeight.w300,
+                ),
+                softWrap: false,
+                overflow: TextOverflow.fade,
+            ),
         );
     }
 
@@ -307,31 +352,30 @@ class _ScorePageState extends State<ScorePage> with AutomaticKeepAliveClientMixi
             }
         }
 
-        return RichText(
-            text: TextSpan(
-                children: <TextSpan>[
-                    TextSpan(
-                        text: "$_score",
-                        style: Theme.of(context).textTheme.title.copyWith(
-                            fontSize: Constants.size(24.0),
-                            fontWeight: FontWeight.w600,
-                            color: !pass ? Colors.red : Colors.blueGrey
-                            ,
+        return Container(
+            margin: const EdgeInsets.only(left: 8.0),
+            padding: const EdgeInsets.only(right: 4.0),
+            child: RichText(
+                text: TextSpan(
+                    children: <TextSpan>[
+                        TextSpan(
+                            text: "$_score",
+                            style: Theme.of(context).textTheme.title.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: Themes.scorePassed[pass],
+                            ),
                         ),
-                    ),
-                    TextSpan(
-                        text: " / ",
-                        style: TextStyle(
-                            color: Theme.of(context).textTheme.body1.color,
+                        TextSpan(
+                            text: " / ",
                         ),
-                    ),
-                    TextSpan(
-                        text: "$_scorePoint",
-                        style: Theme.of(context).textTheme.subtitle.copyWith(
-                            fontSize: Constants.size(16.0),
+                        TextSpan(
+                            text: "$_scorePoint",
                         ),
+                    ],
+                    style: Theme.of(context).textTheme.body1.copyWith(
+                        fontSize: Constants.size(20.0),
                     ),
-                ],
+                ),
             ),
         );
     }
@@ -347,69 +391,40 @@ class _ScorePageState extends State<ScorePage> with AutomaticKeepAliveClientMixi
         );
     }
 
-    @mustCallSuper
+    @override
     Widget build(BuildContext context) {
-        super.build(context);
-        return loading ?
-        Center(child: Constants.progressIndicator())
-                : loadError
-                ? errorWidget
-                :
-        noScore ? Center(child: Text(
-            "暂时还没有你的成绩\n🤔",
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: Constants.size(30.0)),
-        )) : SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Column(
-                children: <Widget>[
-                    if (terms != null) Center(child: Container(
-                        padding: EdgeInsets.symmetric(
-                            vertical: Constants.size(5.0),
-                        ),
-                        height: Constants.size(80.0),
-                        child: ListView.builder(
-                            padding: EdgeInsets.zero,
-                            scrollDirection: Axis.horizontal,
-                            physics: BouncingScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: terms.length + 2,
-                            itemBuilder: (context, index) {
-                                if (index == 0 || index == terms.length + 1) {
-                                    return SizedBox(width: Constants.size(5.0));
-                                } else {
-                                    return _term(
-                                        terms[terms.length - index ],
-                                        terms.length - index,
-                                    );
-                                }
-                            },
-                        ),
-                    )),
-                    GridView.count(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        padding: EdgeInsets.zero,
-                        crossAxisCount: 2,
-                        childAspectRatio: 1.5,
-                        children: <Widget>[
-                            if (scoresFiltered != null) for (int i = 0; i < scoresFiltered.length; i++) Card(
-                                child: Padding(
-                                    padding: EdgeInsets.all(Constants.size(10.0)),
-                                    child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        children: <Widget>[
-                                            _name(scoresFiltered[i]),
-                                            _score(scoresFiltered[i]),
-                                            _timeAndPoint(scoresFiltered[i]),
-                                        ],
-                                    ),
-                                ),
-                            ),
-                        ],
-                    ),
-                ],
+        return Scaffold(
+            appBar: StackAppBar(
+                child: SizedBox(),
             ),
+            body: loading ?
+            Center(child: Constants.progressIndicator())
+                    : loadError
+                    ? errorWidget
+                    :
+            noScore ? Center(child: Text(
+                "暂时还没有你的成绩\n🤔",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: Constants.size(30.0)),
+            )) : scoresFiltered != null ? ListView.separated(
+                padding: EdgeInsets.zero,
+                separatorBuilder: (_, __) => Constants.separator(context, height: 1.0),
+                itemCount: scoresFiltered.length,
+                itemBuilder: (context, index) {
+                    return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 8.0,
+                        ),
+                        child: Row(
+                            children: <Widget>[
+                                _statusIndicator(scoresFiltered[index]),
+                                _name(scoresFiltered[index]),
+                                _score(scoresFiltered[index]),
+                            ],
+                        ),
+                    );
+                },
+            ) : SizedBox(),
         );
     }
 }
