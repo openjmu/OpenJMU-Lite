@@ -33,9 +33,11 @@ class NetUtils {
         ));
     }
 
-    static void updateCookie(String url) {
-        List<Cookie> cookies = cookieJar.loadForRequest(Uri.parse(url));
-        cookieJar.saveFromResponse(Uri.parse(API.oa99Host), cookies);
+    static void updateCookie() {
+        List<Cookie> cookies = [
+            Cookie("PHPSESSID", UserAPI.currentUser.sid),
+            Cookie("OAPSID", UserAPI.currentUser.sid),
+        ];
         cookieJar.saveFromResponse(Uri.parse(API.oap99Host), cookies);
     }
 
@@ -90,14 +92,15 @@ class NetUtils {
             "CLOUDID": "jmu",
             "CLOUD-ID": "jmu",
             "UAP-SID": sid,
+            "WEIBO-API-KEY": Platform.isIOS
+                    ? Constants.postApiKeyIOS
+                    : Constants.postApiKeyAndroid
+            ,
+            "WEIBO-API-SECRET": Platform.isIOS
+                    ? Constants.postApiSecretIOS
+                    : Constants.postApiSecretAndroid
+            ,
         };
-        if (Platform.isIOS) {
-            headers["WEIBO-API-KEY"] = Constants.postApiKeyIOS;
-            headers["WEIBO-API-SECRET"] = Constants.postApiSecretIOS;
-        } else if (Platform.isAndroid) {
-            headers["WEIBO-API-KEY"] = Constants.postApiKeyAndroid;
-            headers["WEIBO-API-SECRET"] = Constants.postApiSecretAndroid;
-        }
         return headers;
     }
     static List<Cookie> buildPHPSESSIDCookies(sid) => [Cookie("PHPSESSID", sid)];

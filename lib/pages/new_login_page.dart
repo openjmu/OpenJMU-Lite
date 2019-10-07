@@ -11,6 +11,7 @@ class NewLoginPage extends StatefulWidget {
 class _NewLoginPageState extends State<NewLoginPage> {
     bool _keyboardAppeared = false;
     double _indicatorValue = 0.5;
+    String dropdownValue = 'One';
 
     void setAlignment(context) {
         if (MediaQuery.of(context).viewInsets.bottom != 0.0 && !_keyboardAppeared) {
@@ -68,6 +69,30 @@ class _NewLoginPageState extends State<NewLoginPage> {
                                             ),
                                         ),
                                     ],
+                                ),
+                            ),
+                            SizedBox(
+                                height: MediaQuery.of(context).size.height / 15,
+                            ),
+                            Container(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 20.0,
+                                    horizontal: 40.0,
+                                ),
+                                child: TextField(
+                                    decoration: InputDecoration(
+                                        border: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Configs.appThemeColor,
+                                            ),
+                                        ),
+                                        focusedBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Configs.appThemeColor,
+                                            ),
+                                        ),
+                                        hintText: "请输入工号/学号",
+                                    ),
                                 ),
                             ),
                         ],

@@ -267,7 +267,7 @@ class AppIcon extends StatelessWidget {
 
     @override
     Widget build(BuildContext context) {
-        return Configs.newAppCenterIcon ? FutureBuilder(
+        return FutureBuilder(
             initialData: SizedBox(),
             future: loadAsset(app),
             builder: (context, snapshot) {
@@ -279,20 +279,6 @@ class AppIcon extends StatelessWidget {
                     ),
                 );
             },
-        ) : SizedBox(
-            width: 60,
-            height: 60,
-            child: Center(
-                child: Image(
-                    image: CachedNetworkImageProvider(
-                        "${API.webAppIcons}"
-                                "appid=${app.id}"
-                                "&code=${app.code}",
-                        cacheManager: DefaultCacheManager(),
-                    ),
-                    fit: BoxFit.fill,
-                ),
-            ),
         );
     }
 }

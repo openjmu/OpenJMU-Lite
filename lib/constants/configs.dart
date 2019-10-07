@@ -4,6 +4,5 @@ class Configs {
     static final String appTitle = 'OpenJMU Lite';
     static final Color appThemeColor = Color(0xfff54337);
 
-    static final bool newAppCenterIcon = true;
     static double fontScale = 1.0;
 }

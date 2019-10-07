@@ -76,7 +76,8 @@ class _SplashPageState extends State<SplashPage> {
             pageBuilder: (BuildContext context, Animation animation, Animation secondaryAnimation) {
                 return FadeTransition(
                     opacity: animation,
-                    child: NewLoginPage(),
+//                    child: NewLoginPage(),
+                    child: LoginPage(),
                 );
             },
         ));

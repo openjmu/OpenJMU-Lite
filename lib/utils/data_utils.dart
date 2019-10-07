@@ -26,7 +26,8 @@ class DataUtils {
             Map<String, dynamic> data = response.data;
             UserAPI.currentUser.sid = data['sid'];
             UserAPI.currentUser.ticket = data['ticket'];
-
+            UserAPI.currentUser.blowfish = blowfish;
+            NetUtils.updateCookie();
             Map<String, dynamic> user = (await UserAPI.getUserInfo(uid: data['uid'])).data;
             Map<String, dynamic> userInfo = {
                 'sid': data['sid'],
@@ -113,7 +114,7 @@ class DataUtils {
             );
             Map<String, dynamic> response = (await NetUtils.post(API.loginTicket, data: params)).data;
             await SpUtils.updateSid(response);
-            NetUtils.updateCookie(API.loginTicket);
+            NetUtils.updateCookie();
             await getUserInfo();
             bool isWizard = true;
             if (!UserAPI.currentUser.isTeacher) isWizard = await checkWizard();
