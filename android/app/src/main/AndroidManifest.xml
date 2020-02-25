@@ -7,20 +7,25 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
-        android:name="io.flutter.app.FlutterApplication"
-        android:label="OpenJMU Lite"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
+        android:label="OpenJMU Lite"
         android:usesCleartextTraffic="true">
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2" />
         <activity
             android:name=".MainActivity"
-            android:launchMode="singleTop"
-            android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
+            android:theme="@style/LaunchTheme"
             android:windowSoftInputMode="adjustResize">
             <meta-data
-                android:name="io.flutter.app.android.SplashScreenUntilFirstFrame"
-                android:value="true" />
+                android:name="io.flutter.embedding.android.SplashScreenDrawable"
+                android:resource="@drawable/launch_background" />
+            <meta-data
+                android:name="io.flutter.embedding.android.NormalTheme"
+                android:resource="@style/NormalTheme" />
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,9 +38,9 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="https"
                     android:host="openjmu.jmu.edu.cn"
-                    android:pathPattern="/lite.html" />
+                    android:pathPattern="/lite.html"
+                    android:scheme="https" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -44,9 +49,9 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="http"
                     android:host="openjmu.jmu.edu.cn"
-                    android:pathPattern="/lite.html" />
+                    android:pathPattern="/lite.html"
+                    android:scheme="http" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -55,9 +60,9 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="http"
                     android:host="openjmu.jmu.edu.cn"
-                    android:pathPattern="/lite" />
+                    android:pathPattern="/lite"
+                    android:scheme="http" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -66,9 +71,9 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="https"
                     android:host="openjmu.jmu.edu.cn"
-                    android:pathPattern="/lite" />
+                    android:pathPattern="/lite"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
         <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">

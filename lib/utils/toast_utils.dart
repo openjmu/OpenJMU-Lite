@@ -1,46 +1,31 @@
-import 'package:flutter/material.dart' show Colors;
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/material.dart';
+// ignore: library_prefixes
+import 'package:oktoast/oktoast.dart' as OKToast;
 
-
-void showLongToast(String text) {
-    Fluttertoast.showToast(
-        msg: text,
-        toastLength: Toast.LENGTH_LONG,
-    );
+void showToast(String text) {
+  OKToast.showToast(text, position: OKToast.ToastPosition.bottom);
 }
 
-void showShortToast(String text) {
-    Fluttertoast.showToast(
-        msg: text,
-        toastLength: Toast.LENGTH_SHORT,
-    );
+void showCenterToast(String text) {
+  OKToast.showToast(text, position: OKToast.ToastPosition.center);
 }
 
-void showCenterShortToast(String text) {
-    Fluttertoast.showToast(
-        msg: text,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-    );
+void showErrorToast(String text) {
+  OKToast.showToast(
+    text,
+    position: OKToast.ToastPosition.bottom,
+    backgroundColor: Colors.redAccent,
+  );
 }
 
-void showCenterErrorShortToast(String text) {
-    Fluttertoast.showToast(
-        msg: text,
-        backgroundColor: Colors.redAccent,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-    );
+void showCenterErrorToast(String text) {
+  OKToast.showToast(
+    text,
+    position: OKToast.ToastPosition.center,
+    backgroundColor: Colors.redAccent,
+  );
 }
 
-void showTopShortToast(String text) {
-    Fluttertoast.showToast(
-        msg: text,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.TOP,
-    );
-}
-
-void cancelToast() {
-    Fluttertoast.cancel();
+void showTopToast(String text) {
+  OKToast.showToast(text, position: OKToast.ToastPosition.top);
 }

@@ -1,1 +1,10 @@
-key.properties
+*.class
+.gradle
+/key.properties
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
+/captures
+GeneratedPluginRegistrant.java
