@@ -381,7 +381,7 @@ class _InAppBrowserPageState extends State<InAppBrowserPage> with AutomaticKeepA
       appBar: (widget.withAppBar ?? true) ? appBar : null,
       body: InAppWebView(
         initialUrl: url,
-        initialOptions: InAppWebViewWidgetOptions(
+        initialOptions: InAppWebViewGroupOptions(
           crossPlatform: InAppWebViewOptions(
             applicationNameForUserAgent: 'openjmu-webview',
             cacheEnabled: widget.withCookie ?? true,
@@ -400,10 +400,10 @@ class _InAppBrowserPageState extends State<InAppBrowserPage> with AutomaticKeepA
             builtInZoomControls: true,
             displayZoomControls: false,
             forceDark: currentIsDark
-                ? AndroidInAppWebViewForceDark.FORCE_DARK_ON
-                : AndroidInAppWebViewForceDark.FORCE_DARK_OFF,
+                ? AndroidForceDark.FORCE_DARK_ON
+                : AndroidForceDark.FORCE_DARK_OFF,
             loadWithOverviewMode: true,
-            mixedContentMode: AndroidInAppWebViewMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
+            mixedContentMode: AndroidMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
             safeBrowsingEnabled: false,
             supportZoom: true,
             useWideViewPort: true,

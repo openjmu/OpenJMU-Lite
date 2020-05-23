@@ -28,7 +28,7 @@ class _MainPageState extends State<MainPage> {
     debugPrint(UserAPI.currentUser.toString());
 
     Instances.eventBus.on<LogoutEvent>().listen((event) {
-      Navigator.of(event.context).pushReplacementNamed("/login");
+      Navigator.of(event.context).pushReplacementNamed(Routes.openjmuLiteLoginPage);
     });
   }
 
@@ -135,7 +135,7 @@ class StackAppBarWithSlot extends StatelessWidget {
       child: GestureDetector(
         child: UserAPI.getAvatarWidget(),
         onTap: () {
-          Navigator.of(context).pushNamed(Routes.OPENJMU_LITE_SETTINGS_PAGE);
+          Navigator.of(context).pushNamed(Routes.openjmuLiteSettingsPage);
         },
       ),
     );
@@ -159,11 +159,10 @@ class StackAppBarWithSlot extends StatelessWidget {
           height: size / 2,
         ),
         onPressed: () async {
-          Map<PermissionGroup, PermissionStatus> permissions =
-              await PermissionHandler().requestPermissions([
-            PermissionGroup.camera,
+          final bool isAllGranted = await checkPermissions(<Permission>[
+            Permission.camera
           ]);
-          if (permissions[PermissionGroup.camera] == PermissionStatus.granted) {
+          if (isAllGranted) {
             Navigator.of(context).pushNamed("/scanqrcode");
           }
         },

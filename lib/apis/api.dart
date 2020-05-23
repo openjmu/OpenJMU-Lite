@@ -57,8 +57,8 @@ class API {
 
   /// 静态scheme正则
   static final RegExp urlReg =
-      RegExp(r"(https?)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]");
-  static final RegExp schemeUserPage = RegExp(r"^openjmu://user/*");
+  RegExp(r'(https?)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]');
+  static final RegExp schemeUserPage = RegExp(r'^openjmu://user/*');
 
   static Future<void> launchWeb({
     @required String url,
@@ -67,8 +67,8 @@ class API {
     bool withCookie = true,
   }) async {
     assert(url != null, 'Url cannot be null when launching url.');
-    final provider = Provider.of<SettingsProvider>(currentContext, listen: false);
-    final shouldLaunchFromSystem = provider.launchFromSystemBrowser;
+    final SettingsProvider provider = Provider.of<SettingsProvider>(currentContext, listen: false);
+    final bool shouldLaunchFromSystem = provider.launchFromSystemBrowser;
     if (shouldLaunchFromSystem) {
       return launch(
         '${Uri.parse(url.trim())}',
@@ -79,7 +79,7 @@ class API {
       );
     } else {
       return navigatorState.pushNamed(
-        Routes.OPENJMU_LITE_INAPPBROWSER,
+        Routes.openjmuLiteInappbrowser,
         arguments: {
           'url': '${Uri.parse(url.trim())}',
           'title': title ?? '',

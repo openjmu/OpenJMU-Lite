@@ -100,9 +100,10 @@ class NetUtils {
   }) async {
     Response<dynamic> response;
     String path;
-    final Map<PermissionGroup, PermissionStatus> permissions =
-        await PermissionHandler().requestPermissions(<PermissionGroup>[PermissionGroup.storage]);
-    if (permissions[PermissionGroup.storage] == PermissionStatus.granted) {
+    final bool isAllGranted = await checkPermissions(<Permission>[
+      Permission.storage,
+    ]);
+    if (isAllGranted) {
       showToast('开始下载...');
       debugPrint('File start download: $url');
       path = (await getExternalStorageDirectory()).path;

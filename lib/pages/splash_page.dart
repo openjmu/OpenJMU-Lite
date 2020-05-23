@@ -55,7 +55,7 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   void pushToMain() {
-    navigatorState.pushReplacementNamed(Routes.OPENJMU_LITE_MAIN_PAGE);
+    navigatorState.pushReplacementNamed(Routes.openjmuLiteMainPage);
   }
 
   void pushToLogin() {

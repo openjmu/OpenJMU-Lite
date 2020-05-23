@@ -12,6 +12,7 @@ export 'package:dio/dio.dart' show Response;
 export 'package:ff_annotation_route/ff_annotation_route.dart' show FFRoute, PageRouteType;
 export 'package:hive/hive.dart' show Box;
 export 'package:pedantic/pedantic.dart';
+export 'package:permission_handler/permission_handler.dart';
 export 'package:url_launcher/url_launcher.dart';
 
 export 'configs.dart';
@@ -27,7 +28,7 @@ export 'package:openjmu_lite/beans/beans.dart';
 export 'package:openjmu_lite/providers/providers.dart';
 export 'package:openjmu_lite/utils/utils.dart';
 
-export 'package:openjmu_lite/openjmu_lite_route.dart' show Routes;
+export 'package:openjmu_lite/openjmu_lite_routes.dart' show Routes, routeNames;
 
 const double kAppBarHeight = 75.0;
 const String packageName = 'cn.edu.jmu.openjmu_lite';

@@ -186,7 +186,6 @@ class _SettingsPageState extends State<SettingsPage> {
         DataUtils.logout(context);
         break;
       case "测试":
-        Navigator.pushNamed(context, "/notification");
         break;
       default:
         break;

@@ -34,7 +34,6 @@ class NotificationUtils {
       importance: Importance.Max,
       priority: Priority.High,
       color: Configs.appThemeColor,
-      style: AndroidNotificationStyle.BigText,
       ticker: 'ticker',
     );
     IOSNotificationDetails iOSDetails = IOSNotificationDetails();

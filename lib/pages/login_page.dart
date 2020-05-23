@@ -27,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
     Instances.eventBus
       ..on<LoginEvent>().listen((event) {
         if (!event.isWizard) {}
-        Navigator.of(event.context).pushReplacementNamed("/main");
+        Navigator.of(event.context).pushReplacementNamed(Routes.openjmuLiteMainPage);
       })
       ..on<LoginFailedEvent>().listen((event) {
         _isLoading = false;
