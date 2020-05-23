@@ -66,8 +66,10 @@ class _LiteAppState extends State<LiteApp> {
       ..on<TicketGotEvent>().listen((event) {
         if (!currentUser.isTeacher) {
           if (!currentUser.isPostgraduate) {
-            Provider.of<CoursesProvider>(currentContext, listen: false).initCourses();
-            Provider.of<ScoresProvider>(currentContext, listen: false).initScore();
+            Provider.of<CoursesProvider>(currentContext, listen: false)
+                .initCourses();
+            Provider.of<ScoresProvider>(currentContext, listen: false)
+                .initScore();
           }
         }
         Provider.of<WebAppsProvider>(currentContext, listen: false).initApps();
@@ -78,11 +80,14 @@ class _LiteAppState extends State<LiteApp> {
 
         if (!currentUser.isTeacher) {
           if (!currentUser.isPostgraduate) {
-            Provider.of<CoursesProvider>(currentContext, listen: false).unloadCourses();
-            Provider.of<ScoresProvider>(currentContext, listen: false).unloadScore();
+            Provider.of<CoursesProvider>(currentContext, listen: false)
+                .unloadCourses();
+            Provider.of<ScoresProvider>(currentContext, listen: false)
+                .unloadScore();
           }
         }
-        Provider.of<WebAppsProvider>(currentContext, listen: false).unloadApps();
+        Provider.of<WebAppsProvider>(currentContext, listen: false)
+            .unloadApps();
       });
   }
 

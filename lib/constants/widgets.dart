@@ -42,8 +42,8 @@ class TransparentRoute extends PageRoute<void> {
   Duration get transitionDuration => duration ?? Duration.zero;
 
   @override
-  Widget buildPage(
-      BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
+  Widget buildPage(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation) {
     final result = builder(context);
     return Semantics(
       scopesRoute: true,
@@ -80,7 +80,8 @@ class OpenJMULogo extends StatelessWidget {
     return UnconstrainedBox(
       child: ClipRRect(
         borderRadius: BorderRadius.circular(suSetWidth(radius)),
-        child: Image.asset("images/logo_1024.png", width: width, height: height),
+        child:
+            Image.asset("images/logo_1024.png", width: width, height: height),
       ),
     );
   }
@@ -160,12 +161,14 @@ class PlatformProgressIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     return Platform.isIOS
         ? CupertinoTheme(
-            data: CupertinoThemeData(brightness: brightness ?? currentBrightness),
+            data:
+                CupertinoThemeData(brightness: brightness ?? currentBrightness),
             child: CupertinoActivityIndicator(radius: radius),
           )
         : CircularProgressIndicator(
             strokeWidth: suSetWidth(strokeWidth),
-            valueColor: color != null ? AlwaysStoppedAnimation<Color>(color) : null,
+            valueColor:
+                color != null ? AlwaysStoppedAnimation<Color>(color) : null,
             value: value,
           );
   }
@@ -239,7 +242,10 @@ class NoSplash extends InteractiveInkFeature {
     VoidCallback onRemoved,
   })  : assert(controller != null),
         assert(referenceBox != null),
-        super(controller: controller, referenceBox: referenceBox, onRemoved: onRemoved) {
+        super(
+            controller: controller,
+            referenceBox: referenceBox,
+            onRemoved: onRemoved) {
     controller.addInkFeature(this);
   }
   @override

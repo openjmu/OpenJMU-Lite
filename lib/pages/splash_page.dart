@@ -61,7 +61,8 @@ class _SplashPageState extends State<SplashPage> {
   void pushToLogin() {
     Instances.navigatorKey.currentState.pushReplacement(PageRouteBuilder(
       transitionDuration: Duration(milliseconds: 1000),
-      pageBuilder: (BuildContext context, Animation animation, Animation secondaryAnimation) {
+      pageBuilder: (BuildContext context, Animation animation,
+          Animation secondaryAnimation) {
         return FadeTransition(
           opacity: animation,
           child: LoginPage(),
@@ -73,7 +74,9 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion(
-      value: Themes.isDark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
+      value: Themes.isDark
+          ? SystemUiOverlayStyle.light
+          : SystemUiOverlayStyle.dark,
       child: Scaffold(
         body: Center(
           child: Hero(

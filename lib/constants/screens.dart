@@ -21,7 +21,8 @@ class Screens {
 
   static double get textScaleFactor => mediaQuery.textScaleFactor;
 
-  static double get navigationBarHeight => mediaQuery.padding.top + kToolbarHeight;
+  static double get navigationBarHeight =>
+      mediaQuery.padding.top + kToolbarHeight;
 
   static double get topSafeHeight => mediaQuery.padding.top;
 
@@ -45,4 +46,6 @@ double suSetHeight(double size, {double scale}) =>
     _sizeCapable(ScreenUtil().setHeight(size) * 2, scale: scale);
 
 double _sizeCapable(double size, {double scale}) =>
-    size * (scale ?? Provider.of<SettingsProvider>(currentContext, listen: false).fontScale);
+    size *
+    (scale ??
+        Provider.of<SettingsProvider>(currentContext, listen: false).fontScale);

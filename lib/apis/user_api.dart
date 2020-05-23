@@ -38,7 +38,8 @@ class UserAPI {
     );
   }
 
-  static CachedNetworkImageProvider getAvatarProvider({int uid, int size, int t}) {
+  static CachedNetworkImageProvider getAvatarProvider(
+      {int uid, int size, int t}) {
     return CachedNetworkImageProvider(
       "${API.userAvatar}"
       "?uid=${uid ?? currentUser.uid}"

@@ -12,7 +12,8 @@ class CourseSchedulePage extends StatefulWidget {
   _CourseSchedulePageState createState() => _CourseSchedulePageState();
 }
 
-class _CourseSchedulePageState extends State<CourseSchedulePage> with TickerProviderStateMixin {
+class _CourseSchedulePageState extends State<CourseSchedulePage>
+    with TickerProviderStateMixin {
   bool loading = true, loaded = false;
   List<Course> courses;
   List<Course> coursesToday;
@@ -26,7 +27,8 @@ class _CourseSchedulePageState extends State<CourseSchedulePage> with TickerProv
 
   @override
   void initState() {
-    _tabController = TabController(length: CourseType.values.length, vsync: this);
+    _tabController =
+        TabController(length: CourseType.values.length, vsync: this);
     getCourses();
     _courseRefreshTimer = Timer.periodic(Duration(minutes: 1), (timer) async {
       getCourses();
@@ -51,8 +53,12 @@ class _CourseSchedulePageState extends State<CourseSchedulePage> with TickerProv
             text: TextSpan(
               children: <TextSpan>[
                 TextSpan(text: "今天是"),
-                TextSpan(text: "${DateFormat("MMMdd日，", "zh_CN").format(provider.now)}"),
-                TextSpan(text: "${DateFormat("EEEE，", "zh_CN").format(provider.now)}"),
+                TextSpan(
+                    text:
+                        "${DateFormat("MMMdd日，", "zh_CN").format(provider.now)}"),
+                TextSpan(
+                    text:
+                        "${DateFormat("EEEE，", "zh_CN").format(provider.now)}"),
                 if (provider.currentWeek != null)
                   if (provider.currentWeek >= 1 && provider.currentWeek <= 20)
                     TextSpan(text: "第${provider.currentWeek}周")
@@ -86,7 +92,8 @@ class _CourseSchedulePageState extends State<CourseSchedulePage> with TickerProv
       _courses.forEach((course) {
         Course _c = Course.fromJson(course);
         _list.add(_c);
-        if (CourseAPI.inCurrentDay(_c) && CourseAPI.inCurrentWeek(_c)) _listToday.add(_c);
+        if (CourseAPI.inCurrentDay(_c) && CourseAPI.inCurrentWeek(_c))
+          _listToday.add(_c);
         if (CourseAPI.inCurrentWeek(_c)) _listWeek.add(_c);
       });
       courses = _list;
@@ -142,7 +149,9 @@ class _CourseSchedulePageState extends State<CourseSchedulePage> with TickerProv
     return Text(
       course.name,
       style: TextStyle(
-        color: CourseAPI.isFinished(course) && type == CourseType.today ? Colors.grey[500] : null,
+        color: CourseAPI.isFinished(course) && type == CourseType.today
+            ? Colors.grey[500]
+            : null,
         fontSize: Constants.size(20.0),
         fontWeight: FontWeight.bold,
       ),
@@ -154,7 +163,9 @@ class _CourseSchedulePageState extends State<CourseSchedulePage> with TickerProv
     return Text(
       CourseAPI.getCourseTime(context, course, type),
       style: TextStyle(
-        color: CourseAPI.isFinished(course) && type == CourseType.today ? Colors.grey[400] : null,
+        color: CourseAPI.isFinished(course) && type == CourseType.today
+            ? Colors.grey[400]
+            : null,
         fontSize: Constants.size(15.0),
       ),
     );
@@ -164,7 +175,9 @@ class _CourseSchedulePageState extends State<CourseSchedulePage> with TickerProv
     return Text(
       CourseAPI.getCourseLocation(context, course, type),
       style: TextStyle(
-        color: CourseAPI.isFinished(course) && type == CourseType.today ? Colors.grey[400] : null,
+        color: CourseAPI.isFinished(course) && type == CourseType.today
+            ? Colors.grey[400]
+            : null,
         fontSize: Constants.size(15.0),
       ),
     );
@@ -221,13 +234,13 @@ class _CourseSchedulePageState extends State<CourseSchedulePage> with TickerProv
         child: TabBar(
           isScrollable: true,
           controller: _tabController,
-          labelColor: Theme.of(context).textTheme.title.color,
-          labelStyle: Theme.of(context).textTheme.title.copyWith(
+          labelColor: Theme.of(context).textTheme.headline6.color,
+          labelStyle: Theme.of(context).textTheme.headline6.copyWith(
                 fontSize: 19.0,
                 fontWeight: FontWeight.bold,
               ),
           labelPadding: EdgeInsets.symmetric(horizontal: Constants.size(20.0)),
-          unselectedLabelStyle: Theme.of(context).textTheme.title.copyWith(
+          unselectedLabelStyle: Theme.of(context).textTheme.headline6.copyWith(
                 fontSize: 19.0,
                 fontWeight: FontWeight.normal,
               ),

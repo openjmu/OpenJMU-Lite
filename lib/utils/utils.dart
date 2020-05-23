@@ -34,9 +34,9 @@ void trueDebugPrint(dynamic message) {
 Future<bool> checkPermissions(List<Permission> permissions) async {
   try {
     final Map<Permission, PermissionStatus> status =
-    await permissions.request();
+        await permissions.request();
     return !status.values.any(
-          (PermissionStatus p) => p != PermissionStatus.granted,
+      (PermissionStatus p) => p != PermissionStatus.granted,
     );
   } catch (e) {
     trueDebugPrint('Error when requesting permission: $e');

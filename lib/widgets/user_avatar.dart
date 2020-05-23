@@ -30,7 +30,9 @@ class UserAvatar extends StatelessWidget {
       width: suSetWidth(size),
       height: suSetWidth(size),
       child: ClipRRect(
-        borderRadius: radius != null ? BorderRadius.circular(suSetWidth(radius)) : maxBorderRadius,
+        borderRadius: radius != null
+            ? BorderRadius.circular(suSetWidth(radius))
+            : maxBorderRadius,
         child: FadeInImage(
           fadeInDuration: 150.milliseconds,
           placeholder: AssetImage('assets/avatar_placeholder.png'),

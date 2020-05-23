@@ -32,7 +32,8 @@ enum CourseType {
 }
 
 class CourseAPI {
-  static TimeOfDay _time(int hour, int minute) => TimeOfDay(hour: hour, minute: minute);
+  static TimeOfDay _time(int hour, int minute) =>
+      TimeOfDay(hour: hour, minute: minute);
   static double _timeToDouble(TimeOfDay time) => time.hour + time.minute / 60.0;
 
   static Set<CourseColor> coursesUniqueColor = {};
@@ -94,19 +95,21 @@ class CourseAPI {
   }
 
   static bool isActive(Course course) {
-    return inCurrentTime(course) && inCurrentDay(course) && inCurrentWeek(course);
+    return inCurrentTime(course) &&
+        inCurrentDay(course) &&
+        inCurrentWeek(course);
   }
 
   static bool notifyFirst(Course course) {
-    double timeToNotify =
-        _timeToDouble(TimeOfDay.fromDateTime(DateTime.now().add(Duration(minutes: 30))));
+    double timeToNotify = _timeToDouble(
+        TimeOfDay.fromDateTime(DateTime.now().add(Duration(minutes: 30))));
     double start = _timeToDouble(courseTime[course.time.toInt()][0]);
     return timeToNotify == start;
   }
 
   static bool notifySecond(Course course) {
-    double timeToNotify =
-        _timeToDouble(TimeOfDay.fromDateTime(DateTime.now().add(Duration(minutes: 5))));
+    double timeToNotify = _timeToDouble(
+        TimeOfDay.fromDateTime(DateTime.now().add(Duration(minutes: 5))));
     double start = _timeToDouble(courseTime[course.time.toInt()][0]);
     return timeToNotify == start;
   }
@@ -151,7 +154,8 @@ class CourseAPI {
     7: "日",
   };
 
-  static String getCourseTime(BuildContext context, Course course, CourseType type) {
+  static String getCourseTime(
+      BuildContext context, Course course, CourseType type) {
     List<TimeOfDay> times = courseTime[course.time.toInt()];
     TimeOfDay start = times[0], end = times[1];
     if (course.isEleven) end = courseTime[11][1];
@@ -159,11 +163,13 @@ class CourseAPI {
     switch (type) {
       case CourseType.today:
         String _time = courseTimeChinese[course.time];
-        if (course.isEleven) _time = "${_time.substring(0, 1)}至${courseTimeChinese["11"]}";
+        if (course.isEleven)
+          _time = "${_time.substring(0, 1)}至${courseTimeChinese["11"]}";
         result = "${start.format(context)} - ${end.format(context)}　$_time";
         break;
       case CourseType.week:
-        result = "${start.format(context)} - ${end.format(context)}　星期${courseDayTime[course.day]}";
+        result =
+            "${start.format(context)} - ${end.format(context)}　星期${courseDayTime[course.day]}";
         break;
       case CourseType.term:
         result = "${start.format(context)} - ${end.format(context)}"
@@ -177,7 +183,8 @@ class CourseAPI {
     return result;
   }
 
-  static String getCourseLocation(BuildContext context, Course course, CourseType type) {
+  static String getCourseLocation(
+      BuildContext context, Course course, CourseType type) {
     String location = course.location;
     String result;
     switch (type) {
@@ -225,5 +232,6 @@ class CourseAPI {
     Color(0xff3275a9),
   ];
 
-  static Color randomCourseColor() => courseColorsList[next(0, courseColorsList.length)];
+  static Color randomCourseColor() =>
+      courseColorsList[next(0, courseColorsList.length)];
 }

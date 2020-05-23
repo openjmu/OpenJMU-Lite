@@ -9,7 +9,8 @@ import 'package:openjmu_lite/constants/constants.dart';
 
 export 'package:dartx/dartx.dart';
 export 'package:dio/dio.dart' show Response;
-export 'package:ff_annotation_route/ff_annotation_route.dart' show FFRoute, PageRouteType;
+export 'package:ff_annotation_route/ff_annotation_route.dart'
+    show FFRoute, PageRouteType;
 export 'package:hive/hive.dart' show Box;
 export 'package:pedantic/pedantic.dart';
 export 'package:permission_handler/permission_handler.dart';
@@ -118,7 +119,8 @@ class Constants {
     };
   }
 
-  static Iterable<LocalizationsDelegate<dynamic>> get localizationsDelegates => [
+  static Iterable<LocalizationsDelegate<dynamic>> get localizationsDelegates =>
+      [
         GlobalWidgetsLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
@@ -128,8 +130,11 @@ class Constants {
         const Locale.fromSubtags(languageCode: 'zh'),
         const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans'),
         const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant'),
-        const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN'),
-        const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant', countryCode: 'TW'),
-        const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant', countryCode: 'HK'),
+        const Locale.fromSubtags(
+            languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN'),
+        const Locale.fromSubtags(
+            languageCode: 'zh', scriptCode: 'Hant', countryCode: 'TW'),
+        const Locale.fromSubtags(
+            languageCode: 'zh', scriptCode: 'Hant', countryCode: 'HK'),
       ];
 }

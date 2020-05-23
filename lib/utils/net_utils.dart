@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:dio/adapter.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-import 'package:flutter/foundation.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:open_file/open_file.dart';
@@ -22,9 +21,11 @@ class NetUtils {
 
   static void initConfig() async {
     dio.interceptors.add(cookieManager);
-    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (HttpClient client) {
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (HttpClient client) {
 //            client.findProxy = (uri) => "PROXY 192.168.0.101:8088";
-      client.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
     };
     dio.interceptors.add(cookieManager);
     dio.interceptors.add(InterceptorsWrapper(
@@ -47,7 +48,8 @@ class NetUtils {
     cookieJar.deleteAll();
   }
 
-  static Future<Response<T>> get<T>(String url, {Map<String, dynamic> data}) async =>
+  static Future<Response<T>> get<T>(String url,
+          {Map<String, dynamic> data}) async =>
       await dio.get<T>(url, queryParameters: data);
 
   static Future<Response> getBytes(String url, {data}) async => await dio.get(
@@ -76,7 +78,8 @@ class NetUtils {
         data: data,
       );
 
-  static Future<Response> postWithHeaderSet(String url, {cookies, headers, data}) async =>
+  static Future<Response> postWithHeaderSet(String url,
+          {cookies, headers, data}) async =>
       await dio.post(
         url,
         data: data,
@@ -85,7 +88,8 @@ class NetUtils {
         ),
       );
 
-  static Future<Response> deleteWithHeaderSet(String url, {data}) async => await dio.delete(
+  static Future<Response> deleteWithHeaderSet(String url, {data}) async =>
+      await dio.delete(
         url,
         data: data,
         options: Options(
@@ -138,9 +142,12 @@ class NetUtils {
       "CLOUDID": "jmu",
       "CLOUD-ID": "jmu",
       "UAP-SID": sid,
-      "WEIBO-API-KEY": Platform.isIOS ? Constants.postApiKeyIOS : Constants.postApiKeyAndroid,
-      "WEIBO-API-SECRET":
-          Platform.isIOS ? Constants.postApiSecretIOS : Constants.postApiSecretAndroid,
+      "WEIBO-API-KEY": Platform.isIOS
+          ? Constants.postApiKeyIOS
+          : Constants.postApiKeyAndroid,
+      "WEIBO-API-SECRET": Platform.isIOS
+          ? Constants.postApiSecretIOS
+          : Constants.postApiSecretAndroid,
     };
     return headers;
   }

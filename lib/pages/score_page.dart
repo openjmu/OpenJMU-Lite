@@ -44,7 +44,10 @@ class _ScorePageState extends State<ScorePage> {
       "point": 0.0,
     },
   };
-  bool loading = true, socketInitialized = false, noScore = false, loadError = false;
+  bool loading = true,
+      socketInitialized = false,
+      noScore = false,
+      loadError = false;
   List<String> terms;
   List<Score> scores = [], scoresFiltered;
   String termSelected;
@@ -88,7 +91,8 @@ class _ScorePageState extends State<ScorePage> {
     if (!socketInitialized) {
       SocketUtils.initSocket(API.scoreSocket).then((whatever) {
         socketInitialized = true;
-        scoresSubscription = utf8.decoder.bind(SocketUtils.mStream).listen(onReceive);
+        scoresSubscription =
+            utf8.decoder.bind(SocketUtils.mStream).listen(onReceive);
         sendRequest();
       }).catchError((e) {
         trueDebugPrint("Socket connect error: $e");
@@ -131,7 +135,8 @@ class _ScorePageState extends State<ScorePage> {
           scoresFiltered = List.from(scores);
           if (scoresFiltered.length > 0)
             scoresFiltered.removeWhere((score) {
-              return score.termId != (termSelected != null ? termSelected : terms.last);
+              return score.termId !=
+                  (termSelected != null ? termSelected : terms.last);
             });
         }
         loading = false;
@@ -149,7 +154,8 @@ class _ScorePageState extends State<ScorePage> {
         scoresFiltered = List.from(scores);
         if (scoresFiltered.length > 0)
           scoresFiltered.removeWhere((score) {
-            return score.termId != (termSelected != null ? termSelected : terms.last);
+            return score.termId !=
+                (termSelected != null ? termSelected : terms.last);
           });
       });
   }
@@ -252,7 +258,9 @@ class _ScorePageState extends State<ScorePage> {
                 color: Theme.of(context).canvasColor,
               ),
             ],
-            color: _term == termSelected ? Configs.appThemeColor : Theme.of(context).canvasColor,
+            color: _term == termSelected
+                ? Configs.appThemeColor
+                : Theme.of(context).canvasColor,
           ),
           child: Padding(
             padding: EdgeInsets.symmetric(
@@ -266,8 +274,10 @@ class _ScorePageState extends State<ScorePage> {
                   style: TextStyle(
                     color: _term == termSelected
                         ? Colors.white
-                        : Theme.of(context).textTheme.body1.color,
-                    fontWeight: _term == termSelected ? FontWeight.bold : FontWeight.normal,
+                        : Theme.of(context).textTheme.bodyText2.color,
+                    fontWeight: _term == termSelected
+                        ? FontWeight.bold
+                        : FontWeight.normal,
                     fontSize: Constants.size(14.0),
                   ),
                 ),
@@ -276,8 +286,10 @@ class _ScorePageState extends State<ScorePage> {
                   style: TextStyle(
                     color: _term == termSelected
                         ? Colors.white
-                        : Theme.of(context).textTheme.body1.color,
-                    fontWeight: _term == termSelected ? FontWeight.bold : FontWeight.normal,
+                        : Theme.of(context).textTheme.bodyText2.color,
+                    fontWeight: _term == termSelected
+                        ? FontWeight.bold
+                        : FontWeight.normal,
                     fontSize: Constants.size(16.0),
                   ),
                 ),
@@ -309,7 +321,7 @@ class _ScorePageState extends State<ScorePage> {
     return Expanded(
       child: Text(
         "${score.courseName}",
-        style: Theme.of(context).textTheme.title.copyWith(
+        style: Theme.of(context).textTheme.headline6.copyWith(
               fontSize: Constants.size(20.0),
               fontWeight: FontWeight.w300,
             ),
@@ -345,7 +357,7 @@ class _ScorePageState extends State<ScorePage> {
           children: <TextSpan>[
             TextSpan(
               text: "$_score",
-              style: Theme.of(context).textTheme.title.copyWith(
+              style: Theme.of(context).textTheme.headline6.copyWith(
                     fontWeight: FontWeight.w600,
                     color: Themes.scorePassed[pass],
                   ),
@@ -357,7 +369,7 @@ class _ScorePageState extends State<ScorePage> {
               text: "$_scorePoint",
             ),
           ],
-          style: Theme.of(context).textTheme.body1.copyWith(
+          style: Theme.of(context).textTheme.bodyText2.copyWith(
                 fontSize: Constants.size(20.0),
               ),
         ),
@@ -369,7 +381,7 @@ class _ScorePageState extends State<ScorePage> {
     return Text(
       "学时: ${score.creditHour}　"
       "学分: ${score.credit.toStringAsFixed(1)}",
-      style: Theme.of(context).textTheme.body1.copyWith(
+      style: Theme.of(context).textTheme.bodyText2.copyWith(
             fontSize: Constants.size(18.0),
             fontWeight: FontWeight.w300,
           ),
@@ -401,14 +413,17 @@ class _ScorePageState extends State<ScorePage> {
                           : scoresFiltered != null
                               ? ListView.separated(
                                   padding: EdgeInsets.zero,
-                                  separatorBuilder: (_, __) => separator(context, height: 1.0),
+                                  separatorBuilder: (_, __) =>
+                                      separator(context, height: 1.0),
                                   itemCount: scoresFiltered.length,
                                   itemBuilder: (context, index) {
                                     return Padding(
-                                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 8.0),
                                       child: Row(
                                         children: <Widget>[
-                                          _statusIndicator(scoresFiltered[index]),
+                                          _statusIndicator(
+                                              scoresFiltered[index]),
                                           _name(scoresFiltered[index]),
                                           _score(scoresFiltered[index]),
                                         ],

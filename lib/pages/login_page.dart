@@ -27,7 +27,8 @@ class _LoginPageState extends State<LoginPage> {
     Instances.eventBus
       ..on<LoginEvent>().listen((event) {
         if (!event.isWizard) {}
-        Navigator.of(event.context).pushReplacementNamed(Routes.openjmuLiteMainPage);
+        Navigator.of(event.context)
+            .pushReplacementNamed(Routes.openjmuLiteMainPage);
       })
       ..on<LoginFailedEvent>().listen((event) {
         _isLoading = false;
@@ -124,12 +125,12 @@ class _LoginPageState extends State<LoginPage> {
           ),
           labelText: '工号/学号',
           labelStyle: TextStyle(
-            color: Theme.of(context).textTheme.title.color,
+            color: Theme.of(context).textTheme.headline6.color,
             fontSize: Constants.size(18.0),
           ),
         ),
         style: TextStyle(
-          color: Theme.of(context).textTheme.title.color,
+          color: Theme.of(context).textTheme.headline6.color,
           fontSize: Constants.size(18.0),
         ),
         cursorColor: Configs.appThemeColor,
@@ -169,7 +170,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
           labelText: '密码',
           labelStyle: TextStyle(
-            color: Theme.of(context).textTheme.title.color,
+            color: Theme.of(context).textTheme.headline6.color,
             fontSize: Constants.size(18.0),
           ),
           suffixIcon: IconButton(
@@ -181,13 +182,14 @@ class _LoginPageState extends State<LoginPage> {
             onPressed: () {
               setState(() {
                 _isObscure = !_isObscure;
-                _defaultIconColor = _isObscure ? Colors.grey : Configs.appThemeColor;
+                _defaultIconColor =
+                    _isObscure ? Colors.grey : Configs.appThemeColor;
               });
             },
           ),
         ),
         style: TextStyle(
-          color: Theme.of(context).textTheme.title.color,
+          color: Theme.of(context).textTheme.headline6.color,
           fontSize: Constants.size(18.0),
         ),
         cursorColor: Configs.appThemeColor,
@@ -246,14 +248,16 @@ class _LoginPageState extends State<LoginPage> {
             children: <TextSpan>[
           TextSpan(
             text: "忘记密码",
-            recognizer: TapGestureRecognizer()..onTap = () => forgotPassword(context),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () => forgotPassword(context),
           ),
           TextSpan(
             text: "　|　",
           ),
           TextSpan(
             text: "查询工号",
-            recognizer: TapGestureRecognizer()..onTap = () => searchWorkId(context),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () => searchWorkId(context),
           ),
         ]));
   }

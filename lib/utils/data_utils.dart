@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:openjmu_lite/beans/beans.dart';
 import 'package:openjmu_lite/constants/themes.dart';
 import 'package:uuid/uuid.dart';
@@ -27,7 +26,8 @@ class DataUtils {
       UserAPI.currentUser.ticket = data['ticket'];
       UserAPI.currentUser.blowfish = blowfish;
       NetUtils.updateCookie();
-      Map<String, dynamic> user = (await UserAPI.getUserInfo(uid: data['uid'])).data;
+      Map<String, dynamic> user =
+          (await UserAPI.getUserInfo(uid: data['uid'])).data;
       Map<String, dynamic> userInfo = {
         'sid': data['sid'],
         'uid': data['uid'],
@@ -113,7 +113,8 @@ class DataUtils {
         ticket: UserAPI.currentUser.sid,
         blowfish: UserAPI.currentUser.blowfish,
       );
-      Map<String, dynamic> response = (await NetUtils.post(API.loginTicket, data: params)).data;
+      Map<String, dynamic> response =
+          (await NetUtils.post(API.loginTicket, data: params)).data;
       await SpUtils.updateSid(response);
       NetUtils.updateCookie();
       await getUserInfo();

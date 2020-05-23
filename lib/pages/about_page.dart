@@ -36,7 +36,7 @@ class AboutPage extends StatelessWidget {
                     if (PackageUtils.version != null)
                       TextSpan(
                         text: "　v${PackageUtils.version}",
-                        style: Theme.of(context).textTheme.subtitle,
+                        style: Theme.of(context).textTheme.subtitle2,
                       ),
                   ],
                 ),
@@ -72,7 +72,7 @@ class AboutPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           "关于OpenJMU Lite",
-          style: Theme.of(context).textTheme.title.copyWith(
+          style: Theme.of(context).textTheme.headline6.copyWith(
                 color: Colors.white,
                 fontSize: Constants.size(21.0),
               ),
@@ -81,7 +81,10 @@ class AboutPage extends StatelessWidget {
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[about(context), SizedBox(height: Constants.size(100.0))],
+        children: <Widget>[
+          about(context),
+          SizedBox(height: Constants.size(100.0))
+        ],
       ),
     );
   }

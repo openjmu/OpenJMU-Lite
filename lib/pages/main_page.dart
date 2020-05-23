@@ -28,7 +28,8 @@ class _MainPageState extends State<MainPage> {
     trueDebugPrint(UserAPI.currentUser.toString());
 
     Instances.eventBus.on<LogoutEvent>().listen((event) {
-      Navigator.of(event.context).pushReplacementNamed(Routes.openjmuLiteLoginPage);
+      Navigator.of(event.context)
+          .pushReplacementNamed(Routes.openjmuLiteLoginPage);
     });
   }
 
@@ -63,7 +64,9 @@ class _MainPageState extends State<MainPage> {
         decoration: BoxDecoration(
           border: Border(
             top: BorderSide(
-              color: Themes.isDark ? Theme.of(context).canvasColor : Theme.of(context).dividerColor,
+              color: Themes.isDark
+                  ? Theme.of(context).canvasColor
+                  : Theme.of(context).dividerColor,
             ),
           ),
         ),
@@ -115,7 +118,9 @@ class BottomAppBarItem extends StatelessWidget {
     return IconButton(
       icon: IconTheme(
         data: IconThemeData(
-          color: selected ? selectedColor ?? Theme.of(context).primaryColor : unselectedColor,
+          color: selected
+              ? selectedColor ?? Theme.of(context).primaryColor
+              : unselectedColor,
         ),
         child: icon,
       ),
@@ -159,9 +164,8 @@ class StackAppBarWithSlot extends StatelessWidget {
           height: size / 2,
         ),
         onPressed: () async {
-          final bool isAllGranted = await checkPermissions(<Permission>[
-            Permission.camera
-          ]);
+          final bool isAllGranted =
+              await checkPermissions(<Permission>[Permission.camera]);
           if (isAllGranted) {
             Navigator.of(context).pushNamed("/scanqrcode");
           }
@@ -182,7 +186,8 @@ class StackAppBarWithSlot extends StatelessWidget {
           height: 1.0,
           child: DecoratedBox(
             decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(color: Theme.of(context).dividerColor)),
+              border: Border(
+                  bottom: BorderSide(color: Theme.of(context).dividerColor)),
             ),
           ),
         ),

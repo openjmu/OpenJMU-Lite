@@ -19,7 +19,8 @@ class ConfirmationBottomSheet extends StatefulWidget {
     this.cancelLabel = '取消',
     this.backgroundColor,
   })  : assert(
-          !(children == null && content == null) && !(children != null && content != null),
+          !(children == null && content == null) &&
+              !(children != null && content != null),
           '\'children\' and \'content\' cannot be set or not set at the same time.',
         ),
         super(key: key);
@@ -74,7 +75,8 @@ class ConfirmationBottomSheet extends StatefulWidget {
 }
 
 class ConfirmationBottomSheetState extends State<ConfirmationBottomSheet> {
-  final GlobalKey<_DismissWrapperState> _dismissWrapperKey = GlobalKey<_DismissWrapperState>();
+  final GlobalKey<_DismissWrapperState> _dismissWrapperKey =
+      GlobalKey<_DismissWrapperState>();
   bool animating = false;
 
   Widget dragIndicator(BuildContext context) => Container(
@@ -94,12 +96,14 @@ class ConfirmationBottomSheetState extends State<ConfirmationBottomSheet> {
           bottom: suSetHeight(10.0),
         ),
         child: Row(
-          mainAxisAlignment:
-              widget.centerTitle ? MainAxisAlignment.center : MainAxisAlignment.start,
+          mainAxisAlignment: widget.centerTitle
+              ? MainAxisAlignment.center
+              : MainAxisAlignment.start,
           children: <Widget>[
             Text(
               widget.title,
-              style: TextStyle(fontSize: suSetSp(28.0), fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: suSetSp(28.0), fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -226,7 +230,8 @@ class _DismissWrapper extends StatefulWidget {
   _DismissWrapperState createState() => _DismissWrapperState();
 }
 
-class _DismissWrapperState extends State<_DismissWrapper> with TickerProviderStateMixin {
+class _DismissWrapperState extends State<_DismissWrapper>
+    with TickerProviderStateMixin {
   final GlobalKey columnKey = GlobalKey();
   final Duration duration = 500.milliseconds;
 
@@ -254,7 +259,8 @@ class _DismissWrapperState extends State<_DismissWrapper> with TickerProviderSta
   }
 
   Future<void> animateWrapper({@required bool forward}) async {
-    final RenderBox renderBox = columnKey.currentContext.findRenderObject() as RenderBox;
+    final RenderBox renderBox =
+        columnKey.currentContext.findRenderObject() as RenderBox;
     final double height = renderBox.size.height;
     if (forward) {
       animationController.value = height;
@@ -269,7 +275,8 @@ class _DismissWrapperState extends State<_DismissWrapper> with TickerProviderSta
 
   void _onDown(PointerDownEvent event) {
     downPosition = event.localPosition;
-    final RenderBox renderBox = columnKey.currentContext.findRenderObject() as RenderBox;
+    final RenderBox renderBox =
+        columnKey.currentContext.findRenderObject() as RenderBox;
     columnHeight = renderBox.size.height;
   }
 
@@ -279,7 +286,8 @@ class _DismissWrapperState extends State<_DismissWrapper> with TickerProviderSta
   }
 
   void _onUp(PointerUpEvent event) {
-    final double percent = math.min(0.999999, animationController.value / columnHeight);
+    final double percent =
+        math.min(0.999999, animationController.value / columnHeight);
     final bool dismiss = percent > 0.5;
 
     if (!dismiss) {
@@ -353,7 +361,9 @@ class ConfirmationBottomSheetAction extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: suSetWidth(10.0)),
               child: IconTheme(
-                data: Theme.of(context).iconTheme.copyWith(size: suSetWidth(36.0)),
+                data: Theme.of(context)
+                    .iconTheme
+                    .copyWith(size: suSetWidth(36.0)),
                 child: icon,
               ),
             ),

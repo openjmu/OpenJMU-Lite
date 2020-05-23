@@ -22,7 +22,8 @@ class ConfirmationDialog extends StatelessWidget {
     this.onConfirm,
     this.onCancel,
   })  : assert(
-          !(child == null && content == null) && !(child != null && content != null),
+          !(child == null && content == null) &&
+              !(child != null && content != null),
           '\'child\' and \'content\' cannot be set or not set at the same time.',
         ),
         super(key: key);
@@ -70,11 +71,13 @@ class ConfirmationDialog extends StatelessWidget {
   }
 
   Widget titleWidget(BuildContext context) => Row(
-        mainAxisAlignment: centerTitle ? MainAxisAlignment.center : MainAxisAlignment.start,
+        mainAxisAlignment:
+            centerTitle ? MainAxisAlignment.center : MainAxisAlignment.start,
         children: <Widget>[
           Text(
             title,
-            style: TextStyle(fontSize: suSetSp(26.0), fontWeight: FontWeight.bold),
+            style:
+                TextStyle(fontSize: suSetSp(26.0), fontWeight: FontWeight.bold),
             maxLines: 1,
             overflow: TextOverflow.fade,
           ),
@@ -168,10 +171,13 @@ class ConfirmationDialog extends StatelessWidget {
                   child
                 else
                   Padding(
-                    padding: contentPadding ?? EdgeInsets.symmetric(vertical: suSetHeight(20.0)),
+                    padding: contentPadding ??
+                        EdgeInsets.symmetric(vertical: suSetHeight(20.0)),
                     child: Text(
                       '$content',
-                      style: TextStyle(fontSize: suSetSp(20.0), fontWeight: FontWeight.normal),
+                      style: TextStyle(
+                          fontSize: suSetSp(20.0),
+                          fontWeight: FontWeight.normal),
                       textAlign: contentAlignment,
                     ),
                   ),

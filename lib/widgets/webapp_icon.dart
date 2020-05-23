@@ -18,9 +18,11 @@ class WebAppIcon extends StatelessWidget {
   Future<Widget> loadAsset() async {
     try {
       await rootBundle.load(iconPath);
-      return SvgPicture.asset(iconPath, width: suSetWidth(size), height: suSetWidth(size));
+      return SvgPicture.asset(iconPath,
+          width: suSetWidth(size), height: suSetWidth(size));
     } catch (e) {
-      trueDebugPrint('Error when load webapp icon: $e.\nLoading fallback icon...');
+      trueDebugPrint(
+          'Error when load webapp icon: $e.\nLoading fallback icon...');
       return ExtendedImage.network(
         oldIconUrl,
         width: suSetWidth(oldIconSize),
@@ -34,19 +36,22 @@ class WebAppIcon extends StatelessWidget {
 
   String get iconPath => 'assets/icons/appCenter/${app.code}-${app.name}.svg';
 
-  String get oldIconUrl => '${API.webAppIcons}appid=${app.appId}&code=${app.code}';
+  String get oldIconUrl =>
+      '${API.webAppIcons}appid=${app.appId}&code=${app.code}';
 
   @override
   Widget build(BuildContext context) {
     return Selector<SettingsProvider, bool>(
       selector: (_, SettingsProvider provider) => provider.newAppCenterIcon,
       builder: (_, bool newAppCenterIcon, __) {
-        final bool shouldUseNew = !(currentUser?.isTeacher ?? false) || newAppCenterIcon;
+        final bool shouldUseNew =
+            !(currentUser?.isTeacher ?? false) || newAppCenterIcon;
         return shouldUseNew
             ? FutureBuilder<Widget>(
                 initialData: const SizedBox.shrink(),
                 future: loadAsset(),
-                builder: (_, AsyncSnapshot<Widget> snapshot) => SizedBox.fromSize(
+                builder: (_, AsyncSnapshot<Widget> snapshot) =>
+                    SizedBox.fromSize(
                   size: Size.square(suSetWidth(size)),
                   child: Center(child: snapshot.data),
                 ),

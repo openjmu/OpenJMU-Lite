@@ -5,6 +5,7 @@ class ThemeUtils {
     Themes.isDark = isDark;
     spSetBrightnessDark(isDark);
     Instances.eventBus.fire(BrightnessChangedEvent(isDark));
+    // ignore: invalid_use_of_protected_member
     Instances.navigatorKey.currentState.setState(() {});
   }
 
