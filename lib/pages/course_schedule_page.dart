@@ -96,7 +96,7 @@ class _CourseSchedulePageState extends State<CourseSchedulePage> with TickerProv
       loading = false;
       if (mounted) setState(() {});
     } catch (e) {
-      debugPrint("$e");
+      trueDebugPrint("$e");
     }
   }
 

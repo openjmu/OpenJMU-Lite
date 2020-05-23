@@ -120,7 +120,7 @@ class WebAppsProvider extends ChangeNotifier {
   }
 
   WebApp appWrapper(WebApp app) {
-//    debugPrint('${app.code}-${app.name}');
+//    trueDebugPrint('${app.code}-${app.name}');
     switch (app.name) {
 //      case '集大通':
 //        app.name = 'OpenJMU';

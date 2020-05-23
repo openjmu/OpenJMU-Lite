@@ -1,11 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive/hive.dart';
 import 'package:notification_permissions/notification_permissions.dart';
+import 'package:oktoast/oktoast.dart';
 
 import 'package:openjmu_lite/constants/constants.dart';
 import 'package:openjmu_lite/pages/no_route_page.dart';
@@ -102,22 +101,27 @@ class _LiteAppState extends State<LiteApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: providers,
-      child: MaterialApp(
-        navigatorKey: Instances.navigatorKey,
-        builder: (c, w) {
-          ScreenUtil.init(c, allowFontScaling: true);
-          return NoScaleTextWidget(child: w);
-        },
-        title: Configs.appTitle,
-        theme: isDark ? Themes.dark() : Themes.light(),
-        home: SplashPage(),
-        navigatorObservers: [FFNavigatorObserver()],
-        onGenerateRoute: (RouteSettings settings) => onGenerateRouteHelper(
-          settings,
-          notFoundFallback: NoRoutePage(route: settings.name),
+      child: Theme(
+        data: isDark ? Themes.dark() : Themes.light(),
+        child: OKToast(
+          child: MaterialApp(
+            navigatorKey: Instances.navigatorKey,
+            builder: (c, w) {
+              ScreenUtil.init(c, allowFontScaling: true);
+              return NoScaleTextWidget(child: w);
+            },
+            title: Configs.appTitle,
+            theme: isDark ? Themes.dark() : Themes.light(),
+            home: SplashPage(),
+            navigatorObservers: [FFNavigatorObserver()],
+            onGenerateRoute: (RouteSettings settings) => onGenerateRouteHelper(
+              settings,
+              notFoundFallback: NoRoutePage(route: settings.name),
+            ),
+            localizationsDelegates: Constants.localizationsDelegates,
+            supportedLocales: Constants.supportedLocales,
+          ),
         ),
-        localizationsDelegates: Constants.localizationsDelegates,
-        supportedLocales: Constants.supportedLocales,
       ),
     );
   }

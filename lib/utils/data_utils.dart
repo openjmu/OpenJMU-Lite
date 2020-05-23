@@ -49,7 +49,7 @@ class DataUtils {
         showToast("登录成功！");
       } catch (e) {
         Instances.eventBus.fire(LoginFailedEvent());
-        debugPrint(e.toString());
+        trueDebugPrint(e.toString());
         if (e.response != null)
           showToast(
             "设置用户信息失败！${jsonDecode(e.response.toString())['msg'] ?? e.toString()}",
@@ -57,7 +57,7 @@ class DataUtils {
       }
     }).catchError((e) {
       Instances.eventBus.fire(LoginFailedEvent());
-      debugPrint(e.toString());
+      trueDebugPrint(e.toString());
       if (e.response != null)
         showToast(
           "登录失败！${jsonDecode(e.response.toString())['msg'] ?? e.toString()}",
@@ -103,7 +103,7 @@ class DataUtils {
       await getTicket();
       Themes.isDark = SpUtils.sp.getBool(SpUtils.spBrightness);
     } catch (e) {
-      debugPrint("Error in recover login info: $e");
+      trueDebugPrint("Error in recover login info: $e");
     }
   }
 
@@ -122,11 +122,11 @@ class DataUtils {
       Instances.eventBus.fire(TicketGotEvent(isWizard));
     } catch (e) {
       if (e.response != null) {
-        debugPrint("Error response.");
-        debugPrint(e);
-        debugPrint(e.response.data);
-        debugPrint(e.response.headers);
-        debugPrint(e.response.request);
+        trueDebugPrint("Error response.");
+        trueDebugPrint(e);
+        trueDebugPrint(e.response.data);
+        trueDebugPrint(e.response.headers);
+        trueDebugPrint(e.response.request);
       }
       Instances.eventBus.fire(TicketFailedEvent());
     }
@@ -151,8 +151,8 @@ class DataUtils {
       };
       setUserInfo(userInfo);
     }).catchError((e) {
-      debugPrint(e);
-      debugPrint(e.toString());
+      trueDebugPrint(e);
+      trueDebugPrint(e.toString());
       showToast(e.toString());
       return e;
     });

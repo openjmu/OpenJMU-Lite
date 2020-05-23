@@ -91,11 +91,11 @@ class _ScorePageState extends State<ScorePage> {
         scoresSubscription = utf8.decoder.bind(SocketUtils.mStream).listen(onReceive);
         sendRequest();
       }).catchError((e) {
-        debugPrint("Socket connect error: $e");
+        trueDebugPrint("Socket connect error: $e");
         fetchError(e.toString());
       });
     } else {
-      debugPrint("Socket already initialized.");
+      trueDebugPrint("Socket already initialized.");
       sendRequest();
     }
   }
@@ -137,7 +137,7 @@ class _ScorePageState extends State<ScorePage> {
         loading = false;
         if (mounted) setState(() {});
       } catch (e) {
-        debugPrint("$e");
+        trueDebugPrint("$e");
       }
     }
   }

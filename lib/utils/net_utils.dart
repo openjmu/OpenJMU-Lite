@@ -29,7 +29,7 @@ class NetUtils {
     dio.interceptors.add(cookieManager);
     dio.interceptors.add(InterceptorsWrapper(
       onError: (DioError e) async {
-        debugPrint("DioError: ${e.message}");
+        trueDebugPrint("DioError: ${e.message}");
         return e;
       },
     ));
@@ -105,7 +105,7 @@ class NetUtils {
     ]);
     if (isAllGranted) {
       showToast('开始下载...');
-      debugPrint('File start download: $url');
+      trueDebugPrint('File start download: $url');
       path = (await getExternalStorageDirectory()).path;
       path += '/' + url.split('/').last.split('?').first;
       try {
@@ -117,17 +117,17 @@ class NetUtils {
             headers: headers ?? buildPostHeaders(currentUser.sid),
           ),
         );
-        debugPrint('File downloaded: $path');
+        trueDebugPrint('File downloaded: $path');
         showToast('下载完成 $path');
         final OpenResult openFileResult = await OpenFile.open(path);
-        debugPrint('File open result: ${openFileResult.type}');
+        trueDebugPrint('File open result: ${openFileResult.type}');
         return response;
       } catch (e) {
-        debugPrint('File download failed: $e');
+        trueDebugPrint('File download failed: $e');
         return null;
       }
     } else {
-      debugPrint('No permission to download file: $url');
+      trueDebugPrint('No permission to download file: $url');
       showToast('未获得存储权限');
       return null;
     }

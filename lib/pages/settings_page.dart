@@ -53,7 +53,7 @@ class _SettingsPageState extends State<SettingsPage> {
         if (mounted) setState(() {});
         getSignStatus();
       }).catchError((e) {
-        debugPrint(e.toString());
+        trueDebugPrint(e.toString());
       });
     }
   }

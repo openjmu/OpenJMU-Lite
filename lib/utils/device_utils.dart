@@ -1,9 +1,8 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
-
 import 'package:device_info/device_info.dart';
+
 import 'package:openjmu_lite/constants/constants.dart';
 
 class DeviceUtils {
@@ -18,7 +17,6 @@ class DeviceUtils {
 
   static Future<void> initDeviceInfo() async {
     await getModel();
-    await getDevicePushToken();
     await getDeviceUuid();
   }
 
@@ -37,24 +35,7 @@ class DeviceUtils {
       deviceModel = model;
     }
 
-    debugPrint('deviceModel: $deviceModel');
-  }
-
-  static Future<void> getDevicePushToken() async {
-    if (Platform.isIOS) {
-      final String _savedToken = HiveFieldUtils.getDevicePushToken();
-      final String _tempToken = await ChannelUtils.iOSGetPushToken();
-      if (_savedToken != null) {
-        if (_savedToken != _tempToken) {
-          await HiveFieldUtils.setDevicePushToken(_tempToken);
-        } else {
-          devicePushToken = HiveFieldUtils.getDevicePushToken();
-        }
-      } else {
-        await HiveFieldUtils.setDevicePushToken(_tempToken);
-      }
-      debugPrint('devicePushToken: $devicePushToken');
-    }
+    trueDebugPrint('deviceModel: $deviceModel');
   }
 
   static Future<void> getDeviceUuid() async {
@@ -67,6 +48,6 @@ class DeviceUtils {
         await HiveFieldUtils.setDeviceUuid(Uuid().v4());
       }
     }
-    debugPrint('deviceUuid: $deviceUuid');
+    trueDebugPrint('deviceUuid: $deviceUuid');
   }
 }

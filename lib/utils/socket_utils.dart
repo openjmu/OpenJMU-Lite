@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:flutter/foundation.dart';
+import 'package:openjmu_lite/constants/constants.dart';
 
 class SocketConfig {
   String host;
@@ -23,10 +23,10 @@ class SocketUtils {
         mSocket = socket;
         mStream = mSocket.asBroadcastStream();
       }).catchError((e) {
-        debugPrint("mSocket Error: $e");
+        trueDebugPrint("mSocket Error: $e");
       });
     } catch (e) {
-      debugPrint("$e");
+      trueDebugPrint("$e");
     }
   }
 

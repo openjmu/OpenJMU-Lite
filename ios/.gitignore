@@ -53,6 +53,7 @@ GeneratedPluginRegistrant.m
 /Flutter/App.framework
 /Flutter/Flutter.framework
 /Flutter/Generated.xcconfig
+/Flutter/flutter_export_environment.sh
 /ServiceDefinitions.json
 
 Pods/

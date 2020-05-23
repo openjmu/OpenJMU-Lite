@@ -48,14 +48,14 @@ class HiveBoxes {
       );
     }
     if (confirm) {
-      debugPrint('Clearing Hive Boxes...');
+      trueDebugPrint('Clearing Hive Boxes...');
       await coursesBox?.clear();
       await courseRemarkBox?.clear();
       await scoresBox?.clear();
       await webAppsBox?.clear();
       await settingsBox?.clear();
       await startWeekBox?.clear();
-      debugPrint('Boxes cleared');
+      trueDebugPrint('Boxes cleared');
       if (kReleaseMode) {
         unawaited(SystemNavigator.pop());
       }

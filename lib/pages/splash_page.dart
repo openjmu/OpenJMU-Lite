@@ -26,7 +26,7 @@ class _SplashPageState extends State<SplashPage> {
     });
     Instances.eventBus
       ..on<TicketGotEvent>().listen((event) async {
-        debugPrint("Ticket Got.");
+        trueDebugPrint("Ticket Got.");
         if (!event.isWizard) {}
         if (this.mounted) {
           isLogin = true;
@@ -34,7 +34,7 @@ class _SplashPageState extends State<SplashPage> {
         }
       })
       ..on<TicketFailedEvent>().listen((event) async {
-        debugPrint("Ticket Failed.");
+        trueDebugPrint("Ticket Failed.");
         if (this.mounted) {
           isLogin = false;
           navigate();
@@ -50,7 +50,7 @@ class _SplashPageState extends State<SplashPage> {
         pushToLogin();
       }
     } catch (e) {
-      debugPrint("$e");
+      trueDebugPrint("$e");
     }
   }
 

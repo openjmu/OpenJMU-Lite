@@ -25,7 +25,7 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    debugPrint(UserAPI.currentUser.toString());
+    trueDebugPrint(UserAPI.currentUser.toString());
 
     Instances.eventBus.on<LogoutEvent>().listen((event) {
       Navigator.of(event.context).pushReplacementNamed(Routes.openjmuLiteLoginPage);

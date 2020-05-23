@@ -90,7 +90,7 @@ class DateProvider extends ChangeNotifier {
       }
       _fetchCurrentWeekTimer?.cancel();
     } catch (e) {
-      debugPrint('Failed when fetching current week: $e');
+      trueDebugPrint('Failed when fetching current week: $e');
       startFetchCurrentWeekTimer();
     }
   }
