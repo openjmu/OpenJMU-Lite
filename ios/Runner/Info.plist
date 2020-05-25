@@ -22,8 +22,33 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>访问你的乐库以提供服务</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>访问你的日历以添加课程日程</string>
+	<key>NSCameraUsageDescription</key>
+	<string>访问你的相机以拍摄并上传图片</string>
+	<key>NSContactsUsageDescription</key>
+	<string>访问你的联系人信息以提供服务</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>访问你的位置以提供定位服务</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>访问你的位置以提供定位服务</string>
+	<key>NSMotionUsageDescription</key>
+	<string>访问陀螺仪以适配旋转</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>访问你的图库以上传图片</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>访问语音识别以提供反馈服务</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
@@ -44,34 +69,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>secu</key>
-	<string></string>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-	</dict>
-	<key>LSApplicationCategoryType</key>
-	<string></string>
-	<key>NSContactsUsageDescription</key>
-	<string>访问你的联系人信息以提供服务</string>
-	<key>NSCalendarsUsageDescription</key>
-	<string>访问你的日历以添加课程日程</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>访问你的图库以上传图片</string>
-	<key>NSCameraUsageDescription</key>
-	<string>访问你的相机以拍摄并上传图片</string>
-	<key>NSAppleMusicUsageDescription</key>
-	<string>访问你的乐库以提供服务</string>
-	<key>NSMotionUsageDescription</key>
-	<string>访问陀螺仪以适配旋转</string>
-	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>访问语音识别以提供反馈服务</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>访问你的位置以提供定位服务</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>访问你的位置以提供定位服务</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>secu</key>
+	<string></string>
 </dict>
 </plist>
